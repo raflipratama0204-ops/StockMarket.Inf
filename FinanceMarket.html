@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PahamSaham Pro - Terminal Data Keuangan</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: #f0f2f5; color: #1e293b; padding: 25px; }
+        .container { max-width: 1300px; margin: 0 auto; }
+        
+        header { background: linear-gradient(135deg, #1e3a8a 0%, #0d9488 100%); padding: 25px; border-radius: 12px; color: white; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 25px; }
+        header h1 { font-size: 1.8rem; display: flex; align-items: center; gap: 12px; }
+        header p { opacity: 0.85; margin-top: 6px; font-size: 0.95rem; }
+
+        .search-input { width: 100%; padding: 14px 18px; border: 1px solid #cbd5e1; border-radius: 10px; font-size: 1rem; outline: none; margin-bottom: 25px; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
+        .search-input:focus { border-color: #0d9488; box-shadow: 0 0 0 3px rgba(13,148,136,0.15); }
+
+        .table-container { background: white; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); overflow-x: auto; margin-bottom: 30px; }
+        table { width: 100%; border-collapse: collapse; text-align: left; }
+        th, td { padding: 14px 18px; border-bottom: 1px solid #e2e8f0; font-size: 0.9rem; }
+        th { background-color: #f8fafc; color: #475569; font-weight: 600; }
+        tbody tr:hover { background-color: #f1f5f9; cursor: pointer; }
+        .ticker-badge { background-color: #ccfbf1; color: #115e59; font-weight: bold; padding: 4px 8px; border-radius: 6px; }
+
+        .detail-section { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05); display: none; margin-bottom: 40px; }
+        .detail-header-wrapper { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #f1f5f9; padding-bottom: 15px; margin-bottom: 25px; flex-wrap: wrap; gap: 15px; }
+        
+        .year-select { padding: 8px 16px; border-radius: 8px; border: 1px solid #cbd5e1; font-size: 1rem; font-weight: bold; color: #1e3a8a; outline: none; cursor: pointer; background-color: #f8fafc; }
+
+        .section-title { font-size: 1.1rem; font-weight: 700; color: #1e3a8a; margin: 25px 0 15px 0; display: flex; align-items: center; gap: 8px; border-bottom: 1px dashed #e2e8f0; padding-bottom: 5px; }
+        
+        /* Grid Financial Ratios */
+        .grid-ratios { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 12px; margin-bottom: 25px; }
+        .card-ratio { background-color: #f8fafc; border: 1px solid #e2e8f0; padding: 12px; border-radius: 8px; text-align: center; }
+        .card-ratio p { font-size: 0.75rem; color: #64748b; font-weight: 600; text-transform: uppercase; }
+        .card-ratio h4 { font-size: 1.25rem; color: #0f172a; margin-top: 4px; font-weight: 700; }
+
+        /* Laporan Keuangan 3 Kolom */
+        .statement-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 20px; }
+        .statement-box { background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 18px; }
+        .statement-box h3 { font-size: 0.95rem; color: #475569; margin-bottom: 12px; border-bottom: 2px solid #e2e8f0; padding-bottom: 6px; display: flex; justify-content: space-between; }
+        .statement-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #f1f5f9; font-size: 0.85rem; }
+        .statement-row.highlight { font-weight: bold; background-color: #f8fafc; padding: 8px 5px; border-radius: 4px; border-bottom: 1px solid #e2e8f0; }
+        .statement-row:last-child { font-weight: bold; background-color: #f1f5f9; padding: 8px 5px; border-radius: 4px; border-bottom: none; }
+
+        /* Perbanking / Credit Section */
+        .bank-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 20px; }
+        .status-badge { display: inline-block; padding: 6px 14px; border-radius: 20px; font-weight: bold; font-size: 0.85rem; margin-bottom: 25px; }
+        .aman { background-color: #dcfce7; color: #15803d; }
+        .waspada { background-color: #fee2e2; color: #b91c1c; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1><i class="fa-solid fa-chart-pie"></i> PahamSaham Pro Terminal</h1>
+        <p>Analisis rasio fundamental otomatis, laporan keuangan komprehensif dengan entri data ekuitas manual.</p>
+    </header>
+
+    <input type="text" id="searchInput" class="search-input" placeholder="🔍 Cari emiten berdasarkan kode saham atau nama (Contoh: BBCA, TLKM)..." onkeyup="saringTabel()">
+
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Ticker</th>
+                    <th>Nama Emiten</th>
+                    <th>Sektor Industri</th>
+                    <th>Harga Terakhir</th>
+                    <th>Saham Beredar</th>
+                    <th>Beta Saham</th>
+                </tr>
+            </thead>
+            <tbody id="mainTableBody"></tbody>
+        </table>
+    </div>
+
+    <!-- BEDAH EMITEN SECTOR -->
+    <div class="detail-section" id="detailSection">
+        <div class="detail-header-wrapper">
+            <div>
+                <h2 id="detNama" style="color: #0f172a;">Nama Perusahaan</h2>
+                <p id="detSektor" style="color: #64748b; font-size: 0.9rem; margin-top: 2px;"></p>
+            </div>
+            <div>
+                <select id="yearSelect" class="year-select" onchange="loadDataTahunan()"></select>
+            </div>
+        </div>
+
+        <!-- 1. RINGKASAN RASIO UTAMA -->
+        <div class="section-title"><i class="fa-solid fa-calculator"></i> Key Financial Ratios (Dihitung Otomatis)</div>
+        <div class="grid-ratios">
+            <div class="card-ratio" style="border-top: 3px solid #3b82f6;">
+                <p>ROE</p><h4 id="rROE">0%</h4>
+            </div>
+            <div class="card-ratio" style="border-top: 3px solid #ef4444;">
+                <p>DER</p><h4 id="rDER">0%</h4>
+            </div>
+            <div class="card-ratio" style="border-top: 3px solid #10b981;">
+                <p>PBV</p><h4 id="rPBV">0x</h4>
+            </div>
+            <div class="card-ratio" style="border-top: 3px solid #f59e0b;">
+                <p>PER</p><h4 id="rPER">0x</h4>
+            </div>
+            <div class="card-ratio" style="border-top: 3px solid #6366f1;">
+                <p>EPS</p><h4 id="rEPS">0</h4>
+            </div>
+            <div class="card-ratio" style="border-top: 3px solid #ec4899;">
+                <p>Current Ratio</p><h4 id="rCR">0%</h4>
+            </div>
+            <div class="card-ratio" style="border-top: 3px solid #14b8a6;">
+                <p>GPM</p><h4 id="rGPM">0%</h4>
+            </div>
+            <div class="card-ratio" style="border-top: 3px solid #06b6d4;">
+                <p>NPM</p><h4 id="rNPM">0%</h4>
+            </div>
+            <div class="card-ratio" style="border-top: 3px solid #64748b;">
+                <p>Beta</p><h4 id="rBeta">0</h4>
+            </div>
+        </div>
+
+        <!-- Indikator Analisis Kesimpulan Risiko -->
+        <div id="detStatus" class="status-badge">Kesehatan Keuangan</div>
+
+        <!-- 2. BLOK UTAMA LAPORAN KEUANGAN NON-BANK -->
+        <div id="nonBankReports" class="statement-grid">
+            <!-- Balance Sheet -->
+            <div class="statement-box">
+                <h3><span><i class="fa-solid fa-building"></i> Balance Sheet</span><span>(Triliun)</span></h3>
+                <div class="statement-row"><span>Cash & Equivalents</span><span id="bsCash">0</span></div>
+                <div class="statement-row"><span>Short Term Debt</span><span id="bsStDebt">0</span></div>
+                <div class="statement-row"><span>Long Term Debt</span><span id="bsLtDebt">0</span></div>
+                <div class="statement-row highlight"><span>Total Debt (Utang Berbunga)</span><span id="bsTotalDebt">0</span></div>
+                <div class="statement-row"><span>Total Liabilitas</span><span id="bsLiab">0</span></div>
+                <div class="statement-row highlight" style="color: #0d9488;"><span>Total Ekuitas (Input Manual)</span><span id="bsEkuitas">0</span></div>
+                <div class="statement-row"><span>Total Asset</span><span id="bsAsset">0</span></div>
+            </div>
+
+            <!-- Income Statement -->
+            <div class="statement-box">
+                <h3><span><i class="fa-solid fa-wallet"></i> Income Statement</span><span>(Triliun)</span></h3>
+                <div class="statement-row"><span>Revenue (Pendapatan)</span><span id="isRev">0</span></div>
+                <div class="statement-row"><span>Gross Profit</span><span id="isGp">0</span></div>
+                <div class="statement-row"><span>EBITDA</span><span id="isEbitda">0</span></div>
+                <div class="statement-row"><span>Net Income (Laba Bersih)</span><span id="isNet">0</span></div>
+            </div>
+
+            <!-- Cash Flow Statement -->
+            <div class="statement-box">
+                <h3><span><i class="fa-solid fa-money-bill-transfer"></i> Cash Flow Statement</span><span>(Triliun)</span></h3>
+                <div class="statement-row"><span>Cash from Operations (CFO)</span><span id="cfCfo">0</span></div>
+                <div class="statement-row"><span>Cash from Investing (CFI)</span><span id="cfCfi">0</span></div>
+                <div class="statement-row"><span>Cash from Financing (CFF)</span><span id="cfCff">0</span></div>
+                <div class="statement-row highlight"><span>CAPEX</span><span id="cfCapex">0</span></div>
+                <div class="statement-row"><span>Free Cash Flow (FCF)</span><span id="cfFcf">0</span></div>
+            </div>
+        </div>
+
+        <!-- 3. BLOK UTAMA LAPORAN KHUSUS PERBANKAN -->
+        <div id="bankReports" class="bank-grid" style="display: none;">
+            <!-- Modal & ATMR -->
+            <div class="statement-box">
+                <h3><span><i class="fa-solid fa-shield-halved"></i> Permodalan & Aset Bank</span><span>(Triliun)</span></h3>
+                <div class="statement-row"><span>Cash & Reserve</span><span id="bkCash">0</span></div>
+                <div class="statement-row"><span>Total Liabilitas (DPK dll)</span><span id="bkLiab">0</span></div>
+                <div class="statement-row highlight" style="color: #0d9488;"><span>Total Ekuitas (Input Manual)</span><span id="bkEkuitas">0</span></div>
+                <div class="statement-row"><span>ATMR (Aset Berisiko)</span><span id="bkAtmr">0</span></div>
+                <div class="statement-row"><span>Net Income (Laba)</span><span id="bkNet">0</span></div>
+                <div class="statement-row"><span>Total Aset Bank</span><span id="bkAsset">0</span></div>
+            </div>
+
+            <!-- Kualitas Kredit / Kolektibilitas (NPL Indikator) -->
+            <div class="statement-box">
+                <h3><span><i class="fa-solid fa-hand-holding-dollar"></i> Kolektibilitas Portofolio Kredit</span><span>(Triliun)</span></h3>
+                <div class="statement-row" style="color: #121212;"><span>1. Kredit Lancar</span><span id="kolLancar">0</span></div>
+                <div class="statement-row" style="color: #121212;"><span>2. Kredit Dalam Perhatian Khusus (DPK)</span><span id="kolDpk">0</span></div>
+                <div class="statement-row" style="color: #121212;"><span>3. Kurang Lancar</span><span id="kolKurang">0</span></div>
+                <div class="statement-row" style="color: #121212;"><span>4. Diragukan</span><span id="kolDiragukan">0</span></div>
+                <div class="statement-row" style="background-color:#fef2f2; color:#991b1b; font-weight:bold;"><span>5. Macet (NPL Akhir)</span><span id="kolMacet">0</span></div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    // 1. DATABASE UTAMA SAHAM - KOLOM 'EKUITAS' SEKARANG DI-INPUT MANUAL DI SINI
+    const emitenDatabase = [
+        {
+            ticker: "BBCA",
+            nama: "PT Bank Central Asia Tbk",
+            sektor: "Perbankan / Finansial",
+            isBank: true,
+            harga: 10250,
+            beredar: 123275000000,
+            beta: 0.85,
+            laporan: {
+                "2025": { aset: 1450.0, liab: 1210.0, ekuitas: 240.0, cash: 52.0, netIncome: 53.5, atmr: 580.0, lancar: 740.0, dpk: 15.2, kurang: 2.1, diragukan: 0.8, macet: 4.2, institusi: 58.2 },
+                "2024": { aset: 1408.0, liab: 1170.0, ekuitas: 238.0, cash: 45.2, netIncome: 48.6, atmr: 550.0, lancar: 710.0, dpk: 17.0, kurang: 2.5, diragukan: 1.0, macet: 4.8, institusi: 57.4 }
+            }
+        },
+        {
+            ticker: "TLKM",
+            nama: "PT Telkom Indonesia Tbk",
+            sektor: "Infrastruktur & Telekomunikasi",
+            isBank: false,
+            harga: 3150,
+            beredar: 99062000000,
+            beta: 1.15,
+            laporan: {
+                "2025": { aset: 295.0, liab: 145.0, ekuitas: 150.0, cash: 32.5, stDebt: 18.0, ltDebt: 38.0, rev: 155.0, gp: 81.0, ebitda: 68.0, netIncome: 26.1, cfo: 42.0, cfi: -18.0, cff: -12.0, capex: 16.5, institusi: 62.5 },
+                "2024": { aset: 287.3, liab: 142.1, ekuitas: 145.2, cash: 28.7, stDebt: 16.4, ltDebt: 36.0, rev: 149.2, gp: 76.4, ebitda: 64.2, netIncome: 24.5, cfo: 39.4, cfi: -16.2, cff: -10.5, capex: 15.0, institusi: 61.2 }
+            }
+        },
+        {
+            ticker: "ASII",
+            nama: "PT Astra International Tbk",
+            sektor: "Otomotif & Konglomerasi",
+            isBank: false,
+            harga: 5100,
+            beredar: 40483000000,
+            beta: 1.05,
+            laporan: {
+                "2025": { aset: 425.0, liab: 202.0, ekuitas: 223.0, cash: 22.0, stDebt: 21.0, ltDebt: 27.0, rev: 325.0, gp: 72.0, ebitda: 51.0, netIncome: 35.2, cfo: 32.5, cfi: -11.0, cff: -14.0, capex: 13.2, institusi: 49.5 },
+                "2024": { aset: 413.5, liab: 195.2, ekuitas: 218.3, cash: 18.4, stDebt: 19.5, ltDebt: 25.6, rev: 316.5, gp: 68.2, ebitda: 48.5, netIncome: 33.8, cfo: 29.8, cfi: -10.2, cff: -12.4, capex: 12.5, institusi: 48.9 }
+            }
+        }
+    ];
+
+    let emitenAktif = "";
+    const tableBody = document.getElementById("mainTableBody");
+
+    function buildTable() {
+        tableBody.innerHTML = "";
+        emitenDatabase.forEach(item => {
+            tableBody.innerHTML += `<tr onclick="bukaEmiten('${item.ticker}')">
+                <td><span class="ticker-badge">${item.ticker}</span></td>
+                <td><b>${item.nama}</b></td>
+                <td>${item.sektor}</td>
+                <td>Rp ${item.harga.toLocaleString('id-ID')}</td>
+                <td>${item.beredar.toLocaleString('id-ID')} Lbr</td>
+                <td>${item.beta}</td>
+            </tr>`;
+        });
+    }
+
+    function saringTabel() {
+        let keyword = document.getElementById("searchInput").value.toUpperCase();
+        let rows = tableBody.getElementsByTagName("tr");
+        for (let i = 0; i < rows.length; i++) {
+            let tickerTd = rows[i].getElementsByTagName("td")[0];
+            let namaTd = rows[i].getElementsByTagName("td")[1];
+            if (tickerTd && namaTd) {
+                let ticker = tickerTd.textContent.toUpperCase();
+                let nama = namaTd.textContent.toUpperCase();
+                rows[i].style.display = (ticker.includes(keyword) || nama.includes(keyword)) ? "" : "none";
+            }
+        }
+    }
+
+    function bukaEmiten(ticker) {
+        emitenAktif = ticker;
+        const target = emitenDatabase.find(e => e.ticker === ticker);
+        if (!target) return;
+
+        document.getElementById("detNama").innerText = `${target.nama} (${target.ticker})`;
+        document.getElementById("detSektor").innerHTML = `<i class="fa-solid fa-tags"></i> ${target.sektor}`;
+
+        const ySelect = document.getElementById("yearSelect");
+        ySelect.innerHTML = "";
+        Object.keys(target.laporan).forEach(th => {
+            ySelect.innerHTML += `<option value="${th}">${th}</option>`;
+        });
+
+        if (target.isBank) {
+            document.getElementById("bankReports").style.display = "grid";
+            document.getElementById("nonBankReports").style.display = "none";
+        } else {
+            document.getElementById("bankReports").style.display = "none";
+            document.getElementById("nonBankReports").style.display = "grid";
+        }
+
+        loadDataTahunan();
+        document.getElementById("detailSection").style.display = "block";
+        document.getElementById("detailSection").scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function loadDataTahunan() {
+        const target = emitenDatabase.find(e => e.ticker === emitenAktif);
+        const tahun = document.getElementById("yearSelect").value;
+        if (!target || !tahun) return;
+
+        const d = target.laporan[tahun];
+        
+        // --- AMBIL NILAI EKUITAS DARI INPUT MANUAL ---
+        let equity = d.ekuitas; 
+        let marketCap = (target.harga * target.beredar) / 1_000_000_000_000;
+        
+        let eps = (d.netIncome * 1_000_000_000_000) / target.beredar;
+        let per = target.harga / eps;
+        
+        let bvps = (equity * 1_000_000_000_000) / target.beredar;
+        let pbv = target.harga / bvps;
+        let roe = (d.netIncome / equity) * 100;
+
+        // Tampilkan Rasio Utama
+        document.getElementById("rROE").innerText = roe.toFixed(1) + "%";
+        document.getElementById("rPBV").innerText = pbv.toFixed(2) + "x";
+        document.getElementById("rPER").innerText = per.toFixed(1) + "x";
+        document.getElementById("rEPS").innerText = Math.round(eps);
+        document.getElementById("rBeta").innerText = target.beta;
+
+        if (!target.isBank) {
+            let totalDebt = d.stDebt + d.ltDebt;
+            let der = (totalDebt / equity) * 100;
+            let cr = (d.cash / d.stDebt) * 100; 
+            let gpm = (d.gp / d.rev) * 100;
+            let npm = (d.netIncome / d.rev) * 100;
+
+            document.getElementById("rDER").innerText = der.toFixed(1) + "%";
+            document.getElementById("rCR").innerText = cr.toFixed(0) + "%";
+            document.getElementById("rGPM").innerText = gpm.toFixed(1) + "%";
+            document.getElementById("rNPM").innerText = npm.toFixed(1) + "%";
+
+            // Render ke tabel UI Balance Sheet
+            document.getElementById("bsCash").innerText = d.cash + " T";
+            document.getElementById("bsStDebt").innerText = d.stDebt + " T";
+            document.getElementById("bsLtDebt").innerText = d.ltDebt + " T";
+            document.getElementById("bsTotalDebt").innerText = totalDebt.toFixed(1) + " T";
+            document.getElementById("bsLiab").innerText = d.liab + " T";
+            document.getElementById("bsEkuitas").innerText = equity.toFixed(1) + " T"; // Sesuai data input manual
+            document.getElementById("bsAsset").innerText = d.aset + " T";
+
+            // Income Statement
+            document.getElementById("isRev").innerText = d.rev + " T";
+            document.getElementById("isGp").innerText = d.gp + " T";
+            document.getElementById("isEbitda").innerText = d.ebitda + " T";
+            document.getElementById("isNet").innerText = d.netIncome + " T";
+
+            // Cash Flow
+            let fcf = d.cfo - d.capex;
+            document.getElementById("cfCfo").innerText = d.cfo + " T";
+            document.getElementById("cfCfi").innerText = d.cfi + " T";
+            document.getElementById("cfCff").innerText = d.cff + " T";
+            document.getElementById("cfCapex").innerText = d.capex + " T";
+            document.getElementById("cfFcf").innerText = fcf.toFixed(1) + " T";
+            
+            document.getElementById("detStatus").className = "status-badge aman";
+            document.getElementById("detStatus").innerHTML = `<i class="fa-solid fa-circle-check"></i> Rasio Utang Modal (DER): ${der.toFixed(1)}% | Ekuitas Tercatat: ${equity.toFixed(1)} T`;
+
+        } else {
+            // SEKTOR PERBANKAN
+            let totalKredit = d.lancar + d.dpk + d.kurang + d.diragukan + d.macet;
+            let kreditbermasalah = d.dpk + d.kurang + d.diragukan + d.macet;
+            let nplGross = ((d.kurang + d.diragukan + d.macet) / totalKredit) * 100;
+
+            document.getElementById("rDER").innerText = "-";
+            document.getElementById("rCR").innerText = "-";
+            document.getElementById("rGPM").innerText = "-";
+            document.getElementById("rNPM").innerText = "-";
+
+            // Render ke tabel UI Bank
+            document.getElementById("bkCash").innerText = d.cash + " T";
+            document.getElementById("bkLiab").innerText = d.liab + " T";
+            document.getElementById("bkEkuitas").innerText = equity.toFixed(1) + " T"; // Sesuai data input manual
+            document.getElementById("bkAtmr").innerText = d.atmr + " T";
+            document.getElementById("bkNet").innerText = d.netIncome + " T";
+            document.getElementById("bkAsset").innerText = d.aset + " T";
+
+            // Kolektibilitas
+            document.getElementById("kolLancar").innerText = d.lancar + " T";
+            document.getElementById("kolDpk").innerText = d.dpk + " T";
+            document.getElementById("kolKurang").innerText = d.kurang + " T";
+            document.getElementById("kolDiragukan").innerText = d.diragukan + " T";
+            document.getElementById("kolMacet").innerText = d.macet + " T";
+
+            let statusColor = nplGross < 5 ? "aman" : "waspada";
+            document.getElementById("detStatus").className = `status-badge ${statusColor}`;
+            document.getElementById("detStatus").innerHTML = `<i class="fa-solid fa-building-columns"></i> Total Portofolio Kredit: ${totalKredit.toFixed(1)} T | NPL Gross Bank: ${nplGross.toFixed(2)}%`;
+        }
+    }
+
+    buildTable();
+</script>
+</body>
+</html>
