@@ -3,16 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PahamSaham Pro - Terminal Data Keuangan</title>
+    <title>Stock Information IDX</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         body { background-color: #f0f2f5; color: #1e293b; padding: 25px; }
         .container { max-width: 1300px; margin: 0 auto; }
         
-        header { background: linear-gradient(135deg, #1e3a8a 0%, #0d9488 100%); padding: 25px; border-radius: 12px; color: white; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 25px; }
+        header { background: linear-gradient(135deg, #1e3a8a 0%, #0d9488 100%); padding: 25px; border-radius: 12px; color: white; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 20px; }
         header h1 { font-size: 1.8rem; display: flex; align-items: center; gap: 12px; }
         header p { opacity: 0.85; margin-top: 6px; font-size: 0.95rem; }
+
+        /* MODUL EKONOMI MAKRO */
+        .econ-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 15px; margin-bottom: 25px; }
+        .econ-card { background: white; padding: 18px; border-radius: 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); border-bottom: 4px solid #3b82f6; text-decoration: none; color: inherit; transition: transform 0.2s; }
+        .econ-card:hover { transform: translateY(-5px); }
+        .econ-label { font-size: 0.8rem; color: #64748b; font-weight: 600; text-transform: uppercase; margin-bottom: 5px; display: flex; justify-content: space-between; }
+        .econ-value { font-size: 1.4rem; font-weight: 800; color: #1e293b; }
+
+        /* PANEL INDIKATOR IHSG */
+        .ihsg-banner { background-color: white; border-radius: 12px; padding: 18px 25px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; border-left: 6px solid #10b981; }
+        .ihsg-title { font-weight: 700; color: #1e293b; font-size: 1.15rem; display: flex; align-items: center; gap: 10px; }
+        .ihsg-data { display: flex; align-items: center; gap: 15px; }
+        .ihsg-price { font-size: 1.8rem; font-weight: 800; color: #0f172a; letter-spacing: -0.5px; }
+        .ihsg-change { font-weight: 700; font-size: 1.1rem; padding: 6px 12px; border-radius: 8px; display: flex; align-items: center; gap: 5px; }
+        .ihsg-change.up { color: #10b981; background: #dcfce7; }
+        .ihsg-change.down { color: #ef4444; background: #fee2e2; }
 
         .search-input { width: 100%; padding: 14px 18px; border: 1px solid #cbd5e1; border-radius: 10px; font-size: 1rem; outline: none; margin-bottom: 25px; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
         .search-input:focus { border-color: #0d9488; box-shadow: 0 0 0 3px rgba(13,148,136,0.15); }
@@ -25,19 +41,23 @@
         .ticker-badge { background-color: #ccfbf1; color: #115e59; font-weight: bold; padding: 4px 8px; border-radius: 6px; }
 
         .detail-section { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05); display: none; margin-bottom: 40px; }
-        .detail-header-wrapper { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #f1f5f9; padding-bottom: 15px; margin-bottom: 25px; flex-wrap: wrap; gap: 15px; }
+        .detail-header-wrapper { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e2e8f0; padding-bottom: 15px; margin-bottom: 20px; flex-wrap: wrap; gap: 15px; }
         
+        .company-info-box { margin-bottom: 25px; }
+        .company-desc { color: #475569; font-size: 0.95rem; line-height: 1.6; margin-bottom: 15px; text-align: justify; }
+        .product-box { background-color: #f8fafc; border-left: 4px solid #0d9488; padding: 12px 16px; border-radius: 0 6px 6px 0; }
+        .product-title { font-weight: 700; color: #0f172a; font-size: 0.9rem; margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
+        .product-list { color: #475569; font-size: 0.9rem; line-height: 1.5; }
+
         .year-select { padding: 8px 16px; border-radius: 8px; border: 1px solid #cbd5e1; font-size: 1rem; font-weight: bold; color: #1e3a8a; outline: none; cursor: pointer; background-color: #f8fafc; }
 
-        .section-title { font-size: 1.1rem; font-weight: 700; color: #1e3a8a; margin: 25px 0 15px 0; display: flex; align-items: center; gap: 8px; border-bottom: 1px dashed #e2e8f0; padding-bottom: 5px; }
+        .section-title { font-size: 1.1rem; font-weight: 700; color: #1e3a8a; margin: 30px 0 15px 0; display: flex; align-items: center; gap: 8px; border-bottom: 1px dashed #e2e8f0; padding-bottom: 5px; }
         
-        /* Grid Financial Ratios */
         .grid-ratios { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 12px; margin-bottom: 25px; }
         .card-ratio { background-color: #f8fafc; border: 1px solid #e2e8f0; padding: 12px; border-radius: 8px; text-align: center; }
         .card-ratio p { font-size: 0.75rem; color: #64748b; font-weight: 600; text-transform: uppercase; }
         .card-ratio h4 { font-size: 1.25rem; color: #0f172a; margin-top: 4px; font-weight: 700; }
 
-        /* Laporan Keuangan 3 Kolom */
         .statement-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 20px; }
         .statement-box { background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 18px; }
         .statement-box h3 { font-size: 0.95rem; color: #475569; margin-bottom: 12px; border-bottom: 2px solid #e2e8f0; padding-bottom: 6px; display: flex; justify-content: space-between; }
@@ -46,13 +66,20 @@
         .statement-row.highlight-blue { font-weight: bold; color: #0284c7; background-color: #f0f9ff; padding: 8px 5px; border-radius: 4px; border-bottom: 1px solid #e0f2fe; }
         .statement-row:last-child { font-weight: bold; background-color: #f1f5f9; padding: 8px 5px; border-radius: 4px; border-bottom: none; }
 
-        /* Perbanking / Credit Section */
         .bank-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 20px; }
         .status-badge { display: inline-block; padding: 6px 14px; border-radius: 20px; font-weight: bold; font-size: 0.85rem; margin-bottom: 25px; }
         .aman { background-color: #dcfce7; color: #15803d; }
         .waspada { background-color: #fee2e2; color: #b91c1c; }
 
-        /* Modul Berita Emiten */
+        .corp-action-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 15px; margin-top: 15px; }
+        .corp-card { background-color: #ffffff; border: 1px solid #e2e8f0; padding: 20px; border-radius: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
+        .corp-card.dividend { border-top: 4px solid #10b981; }
+        .corp-card.rups { border-top: 4px solid #f59e0b; }
+        .corp-header { font-weight: 700; color: #1e293b; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; font-size: 1.05rem; border-bottom: 1px solid #f1f5f9; padding-bottom: 10px; }
+        .corp-row { display: flex; justify-content: space-between; font-size: 0.9rem; margin-bottom: 10px; }
+        .corp-label { color: #64748b; font-weight: 500; }
+        .corp-value { font-weight: 600; color: #0f172a; text-align: right; max-width: 65%; }
+
         .news-grid { display: grid; grid-template-columns: 1fr; gap: 12px; margin-top: 15px; }
         .news-link { text-decoration: none; color: inherit; display: block; }
         .news-card { background-color: #ffffff; border: 1px solid #e2e8f0; border-left: 4px solid #3b82f6; padding: 16px; border-radius: 8px; transition: transform 0.2s, box-shadow 0.2s; cursor: pointer; }
@@ -66,9 +93,40 @@
 
 <div class="container">
     <header>
-        <h1><i class="fa-solid fa-chart-pie"></i> PahamSaham Pro Terminal</h1>
-        <p>Analisis rasio otomatis, laporan keuangan manual, dan sentimen berita emiten.</p>
+        <h1><i class="fa-solid fa-chart-pie"></i> Stock Information IDX</h1>
+        <p>Analisis Laporan Keuangan, Aksi Korporasi & Berita Emiten IDX.</p>
     </header>
+
+    <div class="section-title" style="margin-top: 0;"><i class="fa-solid fa-globe"></i> Indikator Ekonomi Makro (Klik untuk Detail)</div>
+    <div class="econ-grid">
+        <a href="https://tradingeconomics.com/indonesia/interest-rate" target="_blank" class="econ-card">
+            <div class="econ-label">Suku Bunga (BI-Rate) <i class="fa-solid fa-up-right-from-square"></i></div>
+            <div class="econ-value">5,25%</div>
+        </a>
+        <a href="https://tradingeconomics.com/indonesia/inflation-cpi" target="_blank" class="econ-card">
+            <div class="econ-label">Inflasi (YoY) <i class="fa-solid fa-up-right-from-square"></i></div>
+            <div class="econ-value">2,42%</div>
+        </a>
+        <a href="https://tradingeconomics.com/indonesia/consumer-price-index-cpi" target="_blank" class="econ-card">
+            <div class="econ-label">Indeks Harga Konsumen (IHK) <i class="fa-solid fa-up-right-from-square"></i></div>
+            <div class="econ-value">111,09</div>
+        </a>
+        <a href="https://tradingeconomics.com/indonesia/money-supply-m0" target="_blank" class="econ-card">
+            <div class="econ-label">Peredaran Uang (M0) <i class="fa-solid fa-up-right-from-square"></i></div>
+            <div class="econ-value">Rp 1,206 T</div>
+        </a>
+    </div>
+
+    <div class="ihsg-banner">
+        <div class="ihsg-title">
+            <i class="fa-solid fa-chart-line" style="color: #10b981; font-size: 1.5rem;"></i> 
+            IHSG (Indeks Harga Saham Gabungan)
+        </div>
+        <div class="ihsg-data">
+            <span class="ihsg-price">6.162,04</span>
+            <span class="ihsg-change up"><i class="fa-solid fa-caret-up"></i> 67,10 (1,10%)</span>
+        </div>
+    </div>
 
     <input type="text" id="searchInput" class="search-input" placeholder="🔍 Cari emiten berdasarkan kode saham atau nama (Contoh: BBCA, TLKM)..." onkeyup="saringTabel()">
 
@@ -88,7 +146,6 @@
         </table>
     </div>
 
-    <!-- BEDAH EMITEN SECTOR -->
     <div class="detail-section" id="detailSection">
         <div class="detail-header-wrapper">
             <div>
@@ -100,121 +157,128 @@
             </div>
         </div>
 
-        <!-- 1. RINGKASAN RASIO UTAMA -->
-        <div class="section-title"><i class="fa-solid fa-calculator"></i> Key Financial Ratios (Kalkulasi Otomatis)</div>
-        <div class="grid-ratios">
-            <div class="card-ratio" style="border-top: 3px solid #3b82f6;">
-                <p>ROE</p><h4 id="rROE">0%</h4>
-            </div>
-            <div class="card-ratio" style="border-top: 3px solid #ef4444;">
-                <p>DER</p><h4 id="rDER">0%</h4>
-            </div>
-            <div class="card-ratio" style="border-top: 3px solid #10b981;">
-                <p>PBV</p><h4 id="rPBV">0x</h4>
-            </div>
-            <div class="card-ratio" style="border-top: 3px solid #f59e0b;">
-                <p>PER</p><h4 id="rPER">0x</h4>
-            </div>
-            <div class="card-ratio" style="border-top: 3px solid #6366f1;">
-                <p>EPS</p><h4 id="rEPS">0</h4>
-            </div>
-            <div class="card-ratio" style="border-top: 3px solid #ec4899;">
-                <p>Current Ratio</p><h4 id="rCR">0%</h4>
-            </div>
-            <div class="card-ratio" style="border-top: 3px solid #14b8a6;">
-                <p>GPM</p><h4 id="rGPM">0%</h4>
-            </div>
-            <div class="card-ratio" style="border-top: 3px solid #06b6d4;">
-                <p>NPM</p><h4 id="rNPM">0%</h4>
-            </div>
-            <div class="card-ratio" style="border-top: 3px solid #64748b;">
-                <p>Beta</p><h4 id="rBeta">0</h4>
+        <div class="company-info-box">
+            <p id="detDeskripsi" class="company-desc">Deskripsi tentang perusahaan akan muncul di sini.</p>
+            <div class="product-box">
+                <div class="product-title"><i class="fa-solid fa-box-open" style="color: #0d9488;"></i> Produk & Layanan Utama:</div>
+                <div id="detProduk" class="product-list">Daftar produk perusahaan.</div>
             </div>
         </div>
 
-        <!-- Indikator Analisis -->
+        <div class="section-title" style="margin-top:0;"><i class="fa-solid fa-calculator"></i> Key Financial Ratios (Kalkulasi Otomatis)</div>
+        <div class="grid-ratios">
+            <div class="card-ratio" style="border-top: 3px solid #3b82f6;"><p>ROE</p><h4 id="rROE">0%</h4></div>
+            <div class="card-ratio" id="cardDER" style="border-top: 3px solid #ef4444;"><p>DER</p><h4 id="rDER">0%</h4></div>
+            <div class="card-ratio" style="border-top: 3px solid #10b981;"><p>PBV</p><h4 id="rPBV">0x</h4></div>
+            <div class="card-ratio" style="border-top: 3px solid #f59e0b;"><p>PER</p><h4 id="rPER">0x</h4></div>
+            <div class="card-ratio" style="border-top: 3px solid #6366f1;"><p>EPS</p><h4 id="rEPS">0</h4></div>
+            <div class="card-ratio" id="cardCR" style="border-top: 3px solid #ec4899;"><p>Current Ratio</p><h4 id="rCR">0%</h4></div>
+            <div class="card-ratio" id="cardGPM" style="border-top: 3px solid #14b8a6;"><p>GPM</p><h4 id="rGPM">0%</h4></div>
+            <div class="card-ratio" id="cardNPM" style="border-top: 3px solid #06b6d4;"><p>NPM</p><h4 id="rNPM">0%</h4></div>
+            <div class="card-ratio" id="cardNIM" style="border-top: 3px solid #8b5cf6; display: none;"><p>Net Interest Margin</p><h4 id="rNIM">0%</h4></div>
+            <div class="card-ratio" id="cardNPL" style="border-top: 3px solid #eab308; display: none;"><p>NPL Gross</p><h4 id="rNPL">0%</h4></div>
+            
+            <div class="card-ratio" style="border-top: 3px solid #64748b;"><p>Beta</p><h4 id="rBeta">0</h4></div>
+        </div>
+
         <div id="detStatus" class="status-badge">Kesehatan Keuangan</div>
 
-        <!-- 2. BLOK UTAMA LAPORAN KEUANGAN NON-BANK -->
         <div id="nonBankReports" class="statement-grid">
             <div class="statement-box">
-                <h3><span><i class="fa-solid fa-building"></i> Balance Sheet</span><span>(Triliun)</span></h3>
+                <h3><span><i class="fa-solid fa-building"></i> Balance Sheet</span><span>(Triliun Rp)</span></h3>
                 <div class="statement-row"><span>Cash & Equivalents</span><span id="bsCash">0</span></div>
-                <div class="statement-row"><span>Short Term Debt</span><span id="bsStDebt">0</span></div>
+                <div class="statement-row"><span>Aset Lancar</span><span id="bsAsetLancar">0</span></div>
+                <div class="statement-row"><span>Aset Tidak Lancar</span><span id="bsAsetTidakLancar">0</span></div>
+                <div class="statement-row highlight"><span>Total Asset</span><span id="bsAsset">0</span></div>
+                <div class="statement-row" style="margin-top: 8px;"><span>Short Term Debt</span><span id="bsStDebt">0</span></div>
                 <div class="statement-row"><span>Long Term Debt</span><span id="bsLtDebt">0</span></div>
-                <div class="statement-row highlight"><span>Total Debt (Input Manual)</span><span id="bsTotalDebt">0</span></div>
-                <div class="statement-row"><span>Total Liabilitas</span><span id="bsLiab">0</span></div>
-                <div class="statement-row highlight-blue"><span>Total Ekuitas (Input Manual)</span><span id="bsEkuitas">0</span></div>
-                <div class="statement-row"><span>Total Asset</span><span id="bsAsset">0</span></div>
+                <div class="statement-row"><span>Total Debt</span><span id="bsTotalDebt">0</span></div>
+                <div class="statement-row highlight"><span>Total Liabilitas</span><span id="bsLiab">0</span></div>
+                <div class="statement-row highlight"><span>Total Ekuitas (Modal)</span><span id="bsEkuitas">0</span></div>
             </div>
-
             <div class="statement-box">
-                <h3><span><i class="fa-solid fa-wallet"></i> Income Statement</span><span>(Triliun)</span></h3>
+                <h3><span><i class="fa-solid fa-wallet"></i> Income Statement</span><span>(Triliun Rp)</span></h3>
                 <div class="statement-row"><span>Revenue (Pendapatan)</span><span id="isRev">0</span></div>
                 <div class="statement-row"><span>Gross Profit</span><span id="isGp">0</span></div>
                 <div class="statement-row"><span>EBITDA</span><span id="isEbitda">0</span></div>
                 <div class="statement-row"><span>Net Income (Laba Bersih)</span><span id="isNet">0</span></div>
             </div>
-
             <div class="statement-box">
-                <h3><span><i class="fa-solid fa-money-bill-transfer"></i> Cash Flow Statement</span><span>(Triliun)</span></h3>
+                <h3><span><i class="fa-solid fa-money-bill-transfer"></i> Cash Flow Statement</span><span>(Triliun Rp)</span></h3>
                 <div class="statement-row"><span>Cash from Operations (CFO)</span><span id="cfCfo">0</span></div>
                 <div class="statement-row"><span>Cash from Investing (CFI)</span><span id="cfCfi">0</span></div>
                 <div class="statement-row"><span>Cash from Financing (CFF)</span><span id="cfCff">0</span></div>
                 <div class="statement-row highlight"><span>CAPEX</span><span id="cfCapex">0</span></div>
-                <div class="statement-row highlight-blue"><span>Free Cash Flow (Input Manual)</span><span id="cfFcf">0</span></div>
+                <div class="statement-row highlight-blue"><span>Free Cash Flow (FCF)</span><span id="cfFcf">0</span></div>
             </div>
         </div>
 
-        <!-- 3. BLOK UTAMA LAPORAN KHUSUS PERBANKAN -->
         <div id="bankReports" class="bank-grid" style="display: none;">
             <div class="statement-box">
-                <h3><span><i class="fa-solid fa-shield-halved"></i> Permodalan & Aset Bank</span><span>(Triliun)</span></h3>
-                <div class="statement-row"><span>Cash & Reserve</span><span id="bkCash">0</span></div>
-                <div class="statement-row"><span>Total Liabilitas (DPK dll)</span><span id="bkLiab">0</span></div>
-                <div class="statement-row highlight-blue"><span>Total Ekuitas (Input Manual)</span><span id="bkEkuitas">0</span></div>
+                <h3><span><i class="fa-solid fa-shield-halved"></i> Permodalan & Aset Bank</span><span>(Triliun Rp)</span></h3>
+                <div class="statement-row"><span>Cash & Reserve BI</span><span id="bkCash">0</span></div>
+                <div class="statement-row"><span>Aset Lancar</span><span id="bkAsetLancar">N/A</span></div>
+                <div class="statement-row"><span>Aset Tidak Lancar</span><span id="bkAsetTidakLancar">N/A</span></div>
+                <div class="statement-row highlight"><span>Total Aset Bank</span><span id="bkAsset">0</span></div>
+                <div class="statement-row" style="margin-top: 8px;"><span>Total Liabilitas</span><span id="bkLiab">0</span></div>
+                <div class="statement-row" style="color: #64748b; font-size: 0.8rem;"><span>↳ Dana Pihak Ketiga (DPK)</span><span id="bkDpkNasabah">0</span></div>
+                <div class="statement-row highlight"><span>Total Ekuitas (Modal)</span><span id="bkEkuitas">0</span></div>
                 <div class="statement-row"><span>ATMR (Aset Berisiko)</span><span id="bkAtmr">0</span></div>
-                <div class="statement-row"><span>Net Income (Laba)</span><span id="bkNet">0</span></div>
-                <div class="statement-row"><span>Total Aset Bank</span><span id="bkAsset">0</span></div>
             </div>
-
             <div class="statement-box">
-                <h3><span><i class="fa-solid fa-hand-holding-dollar"></i> Kolektibilitas Portofolio Kredit</span><span>(Triliun)</span></h3>
+                <h3><span><i class="fa-solid fa-wallet"></i> Laba Rugi Bank</span><span>(Triliun Rp)</span></h3>
+                <div class="statement-row"><span>Pendapatan Bunga (Interest Income)</span><span id="bkIntInc">0</span></div>
+                <div class="statement-row"><span>Beban Bunga (Interest Expense)</span><span id="bkIntExp">0</span></div>
+                <div class="statement-row highlight"><span>Pendapatan Bunga Bersih (NII)</span><span id="bkNII">0</span></div>
+                <div class="statement-row highlight" style="margin-top: 25px;"><span>Net Income (Laba Bersih)</span><span id="bkNet">0</span></div>
+            </div>
+            <div class="statement-box">
+                <h3><span><i class="fa-solid fa-hand-holding-dollar"></i> Kolektibilitas Portofolio Kredit</span><span>(Triliun Rp)</span></h3>
                 <div class="statement-row" style="color: #121212;"><span>1. Kredit Lancar</span><span id="kolLancar">0</span></div>
-                <div class="statement-row" style="color: #121212;"><span>2. Dalam Perhatian Khusus (DPK)</span><span id="kolDpk">0</span></div>
+                <div class="statement-row" style="color: #121212;"><span>2. Dalam Perhatian Khusus</span><span id="kolDpk">0</span></div>
                 <div class="statement-row" style="color: #121212;"><span>3. Kurang Lancar</span><span id="kolKurang">0</span></div>
                 <div class="statement-row" style="color: #121212;"><span>4. Diragukan</span><span id="kolDiragukan">0</span></div>
-                <div class="statement-row" style="background-color:#fef2f2; color:#991b1b; font-weight:bold;"><span>5. Macet</span><span id="kolMacet">0</span></div>
+                <div class="statement-row" style="color: #121212;"><span>5. Macet</span><span id="kolMacet">0</span></div>
+                
+                <div class="statement-row highlight" style="margin-top: 15px;"><span>Total Kredit Bermasalah</span><span id="bkKreditBermasalah">0</span></div>
+                <div class="statement-row highlight-blue"><span>Total Kredit Diberikan</span><span id="bkTotalKredit">0</span></div>
             </div>
         </div>
 
-        <!-- 4. BERITA & KETERBUKAAN INFORMASI -->
-        <div class="section-title" style="margin-top: 40px;"><i class="fa-regular fa-newspaper"></i> Berita & Keterbukaan Informasi Terbaru</div>
-        <div id="newsContainer" class="news-grid">
-            <!-- Berita akan dirender di sini via JS -->
-        </div>
+        <div class="section-title"><i class="fa-solid fa-bullhorn"></i> Aksi Korporasi (Jadwal Terdekat)</div>
+        <div id="corpActionContainer" class="corp-action-grid"></div>
+
+        <div class="section-title"><i class="fa-regular fa-newspaper"></i> Berita & Keterbukaan Informasi Terbaru</div>
+        <div id="newsContainer" class="news-grid"></div>
 
     </div>
 </div>
 
 <script>
-    // 1. DATABASE UTAMA SAHAM - TAMBAHAN PROPERTY "url" UNTUK LINK BERITA
     const emitenDatabase = [
         {
             ticker: "BBCA",
             nama: "PT Bank Central Asia Tbk",
             sektor: "Perbankan / Finansial",
             isBank: true,
-            harga: 10250,
-            beredar: 123275000000,
+            harga: 5900,
+            beredar: 123275050000,
             beta: 0.85,
+            deskripsi: "PT Bank Central Asia Tbk (BCA) adalah bank swasta terbesar di Indonesia yang dikenal karena keunggulannya dalam layanan perbankan transaksi (transaction banking). BCA menyediakan berbagai layanan keuangan komprehensif bagi segmen nasabah konsumer, komersial, maupun korporasi, serta memiliki sistem IT perbankan yang paling mumpuni di kelasnya.",
+            produk: "Tahapan BCA, BCA Mobile, MyBCA, KlikBCA, Flazz BCA, Kartu Kredit BCA, Kredit Kendaraan Bermotor (KKB), Kredit Pemilikan Rumah (KPR).",
+            aksiKorporasi: {
+                dividen: { jumlah: "Rp 270 / Saham", tipe: "Dividen Tunai Final", cumDate: "22 Mar 2026", paymentDate: "04 Apr 2026" },
+                rups: { tanggal: "12 Mar 2026", jenis: "RUPST (Tahunan)", lokasi: "Menara BCA, Jakarta", agenda: "Persetujuan Laporan Keuangan, Pembagian Dividen & Perubahan Direksi" }
+            },
             berita: [
-                { tanggal: "15 Mei 2026", judul: "BBCA Bagikan Dividen Tunai Interim Sebesar Rp 50 per Saham", sumber: "CNBC Indonesia", url: "https://www.cnbcindonesia.com/market/20241112161543-17-587622/bca--bbca--akan-bagikan-dividen-interim-tunai-rp50-per-saham"},
-                { tanggal: "02 April 2026", judul: "Pertumbuhan Kredit BCA Capai Dua Digit pada Kuartal Pertama 2026", sumber: "Bisnis.com", url: "https://finansial.bisnis.com/" }
+                { tanggal: "23 Mei 2026", judul: "99,8% Transaksi Sudah Digital, BCA Perkuat Benteng Lawan Cyber Fraud", sumber: "CNBC Indonesia", url: "https://www.cnbcindonesia.com/market/20260523124417-17-737361/998-transaksi-sudah-digital-bca-perkuat-benteng-lawan-cyber-fraud"},
+                { tanggal: "22 Mei 2026", judul: "BCA Bantah Isu Data Nasabah Bocor, Ini Penjelasannya", sumber: "katadata.co.id", url: "https://katadata.co.id/finansial/korporasi/6a10607d1f098/bca-bantah-isu-data-nasabah-bocor-ini-penjelasannya"},
+                { tanggal: "15 Mei 2026", judul: "BBCA Bagikan Dividen Tunai Interim Sebesar Rp 50 per Saham", sumber: "CNBC Indonesia", url: "https://www.cnbcindonesia.com/market/20241112161543-17-587622/bca--bbca--akan-bagikan-dividen-interim-tunai-rp50-per-saham" }
             ],
             laporan: {
-                "2025": { aset: 1450.0, liab: 1210.0, ekuitas: 240.0, cash: 52.0, netIncome: 53.5, atmr: 580.0, lancar: 740.0, dpk: 15.2, kurang: 2.1, diragukan: 0.8, macet: 4.2, totalKredit: 762.3, nplGross: 2.1 },
-                "2024": { aset: 1408.0, liab: 1170.0, ekuitas: 238.0, cash: 45.2, netIncome: 48.6, atmr: 550.0, lancar: 710.0, dpk: 17.0, kurang: 2.5, diragukan: 1.0, macet: 4.8, totalKredit: 735.3, nplGross: 2.3 }
+                "2025": { asetLancar: null, asetTidakLancar: null, aset: 1586.83, liab: 1305.14, dpkNasabah: 1225.50, ekuitas: 281.47, cash: 82.89, netIncome: 57.54, intIncome: 104.2, intExpense: 16.8, nim: 5.8, atmr: 936.37, lancar: 958.61, dpk: 17.82, kurang: 1.41, diragukan: 1.90, macet: 13.17, nplGross: 1.7 },
+                "2024": { asetLancar: null, asetTidakLancar: null, aset: 1449.30, liab: 1186.47, dpkNasabah: 1119.99, ekuitas: 262.64, cash: 81.44, netIncome: 54.84, intIncome: 95.8, intExpense: 14.5, nim: 5.7, atmr: 910.18, lancar: 886.26, dpk: 19.59, kurang: 1.20, diragukan: 1.36, macet: 13.47, nplGross: 1.8 },
+                "2023": { asetLancar: null, asetTidakLancar: null, aset: 1408.11, liab: 1165.57, dpkNasabah: 1090.74, ekuitas: 242.54, cash: 119.93, netIncome: 48.64, intIncome: 87.4, intExpense: 12.3, nim: 5.5, atmr: 825.61, lancar: 754.33, dpk: 36.89, kurang: 20.82, diragukan: 16.08, macet: 14.90, nplGross: 1.9 }
             }
         },
         {
@@ -222,16 +286,24 @@
             nama: "PT Telkom Indonesia Tbk",
             sektor: "Infrastruktur & Telekomunikasi",
             isBank: false,
-            harga: 3150,
-            beredar: 99062000000,
+            harga: 2920,
+            beredar: 99062216600,
             beta: 1.15,
+            deskripsi: "PT Telkom Indonesia (Persero) Tbk adalah Badan Usaha Milik Negara (BUMN) penyedia jasa dan jaringan telekomunikasi terbesar di Indonesia. Telkom menguasai pangsa pasar layanan telekomunikasi seluler, broadband internet kabel, serta berekspansi secara agresif ke bisnis data center dan solusi enterprise digital.",
+            produk: "Telkomsel (Prabayar & Halo), IndiHome, Telkomsel Orbit, Wifi.id, Layanan Data Center (NeuCentrIX), Enterprise Cloud Solutions.",
+            aksiKorporasi: {
+                rups: { tanggal: "08 Juni 2026", jenis: "RUPST", lokasi: "Secara elektronik melalui eASY.KSEI", agenda: "Persetujuan pembelian kembali (Buyback)" }
+            },
             berita: [
-                { tanggal: "10 Mei 2026", judul: "Telkomsel Catat Peningkatan Trafik Data 15% Selama Momen Libur Panjang", sumber: "Kontan", url: "https://www.kontan.co.id/" },
-                { tanggal: "28 Maret 2026", judul: "TLKM Lanjutkan Proyek Ekspansi Data Center di Batam", sumber: "Investor Daily", url: "https://investor.id/" }
+                { tanggal: "22 Mei 2026", judul: "Penyebab IHSG Ditutup Naik 1,1% Hari Ini", Sumber: "CNBC Indonesia", url: "https://www.cnbcindonesia.com/market/20260522160828-17-737142/penyebab-ihsg-ditutup-naik-11-hari-ini" },
+                { tanggal: "20 Mei 2026", judul: "Bos Telkom Pamer Sumber Duit Baru, Baru Sebulan Sudah Ngebut  Baca artikel CNBC Indonesia", sumber: "CNBC Indonesia", url: "https://www.cnbcindonesia.com/tech/20260520150231-37-736422/bos-telkom-pamer-sumber-duit-baru-baru-sebulan-sudah-ngebut" },
+                { tanggal: "20 Mei 2026", judul: "Telkomsel Operasikan Jaringan 5G di 107 Kota Indonesia Per Mei 2026", sumber: "babelinsight.id", url: "https://www.babelinsight.id/telkomsel-operasikan-jaringan-5g-indonesia" }
+
             ],
             laporan: {
-                "2025": { aset: 295.0, liab: 145.0, ekuitas: 150.0, cash: 32.5, stDebt: 18.0, ltDebt: 38.0, totalDebt: 56.0, rev: 155.0, gp: 81.0, ebitda: 68.0, netIncome: 26.1, cfo: 42.0, cfi: -18.0, cff: -12.0, capex: 16.5, fcf: 25.5 },
-                "2024": { aset: 287.3, liab: 142.1, ekuitas: 145.2, cash: 28.7, stDebt: 16.4, ltDebt: 36.0, totalDebt: 52.4, rev: 149.2, gp: 76.4, ebitda: 64.2, netIncome: 24.5, cfo: 39.4, cfi: -16.2, cff: -10.5, capex: 15.0, fcf: 24.4 }
+                "2025": { asetLancar: 61.77, asetTidakLancar: 225.99, aset: 287.76, liab: 137.22, ekuitas: 130.69, cash: 25.31, stDebt: 73.95, ltDebt: 63.27, totalDebt: 137.22, rev: 146.74, gp: 34.65, ebitda: 72.24, netIncome: 17.81, cfo: 36.80, cfi: -14.28, cff: -22.93, capex: 24.58, fcf: 12.22 },
+                "2024": { asetLancar: 63.08, asetTidakLancar: 228.31, aset: 291.39, liab: 137.19, ekuitas: 133.81, cash: 29.31, stDebt: 76.77, ltDebt: 60.42, totalDebt: 137.19, rev: 149.97, gp: 41.45, ebitda: 75.03, netIncome: 22.40, cfo: 38.93, cfi: -14.93, cff: -25.63, capex: 24.45, fcf: 14.48 },
+                "2023": { asetLancar: 55.61, asetTidakLancar: 231.43, aset: 287.04, liab: 130.48, ekuitas: 135.74, cash: 29.01, stDebt: 71.57, ltDebt: 58.91, totalDebt: 130.48, rev: 149.22, gp: 44.38, ebitda: 77.58, netIncome: 24.56, cfo: 36.00, cfi: -14.00, cff: -22.00, capex: 32.97, fcf: 12.00 }
             }
         },
         {
@@ -239,16 +311,23 @@
             nama: "PT Astra International Tbk",
             sektor: "Otomotif & Konglomerasi",
             isBank: false,
-            harga: 5100,
-            beredar: 40483000000,
+            harga: 5400,
+            beredar: 40483553140,
             beta: 1.05,
+            deskripsi: "PT Astra International Tbk adalah salah satu konglomerasi bisnis terbesar dan paling terdiversifikasi di Indonesia. ASII mengoperasikan 7 segmen usaha utama yang mencakup industri otomotif, jasa keuangan, alat berat, pertambangan, konstruksi, agribisnis, infrastruktur, dan teknologi informasi.",
+            produk: "Mobil (Toyota, Daihatsu, Isuzu, BMW, Peugeot), Motor (Honda/AHM), United Tractors (Alat Berat Komatsu), Astra Credit Companies (ACC), Asuransi Astra (Garda Oto), AstraPay, Jalan Tol Astra Infra.",
+            aksiKorporasi: {
+                dividen: { jumlah: "Rp 390 / Saham", tipe: "Dividen Final", cumDate: "04 Mei 2026", paymentDate: "25 Mei 2026" }
+            },
             berita: [
-                { tanggal: "12 Mei 2026", judul: "Penjualan Mobil Astra Naik Tipis Jelang Akhir Kuartal Kedua", sumber: "Detik Finance", url: "https://finance.detik.com/" },
-                { tanggal: "20 Februari 2026", judul: "United Tractors (UNTR), Anak Usaha ASII, Bukukan Rekor Penjualan Alat Berat", sumber: "Bloomberg", url: "https://www.bloombergtechnoz.com/" }
+                { tanggal: "13 Mei 2026", judul: "Simak Rekomendasi Saham Astra (ASII) Usai Penjualan Meningkat di April 2026", sumber: "Kontan.co.id", url: "https://investasi.kontan.co.id/news/simak-rekomendasi-saham-astra-asii-usai-penjualan-meningkat-di-april-2026#goog_rewarded" },
+                { tanggal: "06 Mei 2026", judul: "Laba ASII Turun 16% di Q1 2026, Rekomendasi HOLD, Ini Target Harganya", sumber: "bareksa.com", url: "https://www.bareksa.com/berita/saham/2026-05-06/laba-asii-turun-16-di-q1-2026-rekomendasi-hold-ini-target-harganya" },
+                { tanggal: "29 Apr 2026", judul: "Kinerja Kuartal I-2026 Lesu, Intip Rekomendasi Saham Astra (ASII)", sumber: "Kontan.co.id", url: "https://id.tradingview.com/news/kontan:0a24fcb9e87ea:0/" }
             ],
             laporan: {
-                "2025": { aset: 425.0, liab: 202.0, ekuitas: 223.0, cash: 22.0, stDebt: 21.0, ltDebt: 27.0, totalDebt: 48.0, rev: 325.0, gp: 72.0, ebitda: 51.0, netIncome: 35.2, cfo: 32.5, cfi: -11.0, cff: -14.0, capex: 13.2, fcf: 19.3 },
-                "2024": { aset: 413.5, liab: 195.2, ekuitas: 218.3, cash: 18.4, stDebt: 19.5, ltDebt: 25.6, totalDebt: 45.1, rev: 316.5, gp: 68.2, ebitda: 48.5, netIncome: 33.8, cfo: 29.8, cfi: -10.2, cff: -12.4, capex: 12.5, fcf: 17.3 }
+                "2025": { asetLancar: 188.56, asetTidakLancar: 318.81, aset: 507.37, liab: 216.55, ekuitas: 228.91, cash: 52.62, stDebt: 21.00, ltDebt: 89.30, totalDebt: 110.30, rev: 323.39, gp: 71.44, ebitda: 45.00, netIncome: 32.77, cfo: 35.00, cfi: -15.00, cff: -20.00, capex: 15.00, fcf: 20.00 },
+                "2024": { asetLancar: 176.26, asetTidakLancar: 295.19, aset: 471.45, liab: 199.45, ekuitas: 213.68, cash: 48.44, stDebt: 11.82, ltDebt: 88.85, totalDebt: 100.67, rev: 328.48, gp: 73.06, ebitda: 48.50, netIncome: 33.90, cfo: 30.00, cfi: -10.00, cff: -12.00, capex: 12.00, fcf: 18.00 },
+                "2023": { asetLancar: 166.19, asetTidakLancar: 279.49, aset: 445.68, liab: 195.26, ekuitas: 250.42, cash: 41.14, stDebt: 39.06, ltDebt: 54.25, totalDebt: 93.31, rev: 316.57, gp: 73.31, ebitda: 45.00, netIncome: 33.84, cfo: 30.00, cfi: -15.00, cff: -10.00, capex: 37.00, fcf: 20.00 }
             }
         }
     ];
@@ -289,32 +368,77 @@
         const target = emitenDatabase.find(e => e.ticker === ticker);
         if (!target) return;
 
-        // Render Header
         document.getElementById("detNama").innerText = `${target.nama} (${target.ticker})`;
-        document.getElementById("detSektor").innerHTML = `<i class="fa-solid fa-tags"></i> ${target.sektor}`;
+        document.getElementById("detSektor").innerHTML = `🇮🇩 <i class="fa-solid fa-tags"></i> ${target.sektor}`;
+        
+        document.getElementById("detDeskripsi").innerText = target.deskripsi;
+        document.getElementById("detProduk").innerText = target.produk;
 
-        // Render Dropdown Tahun
         const ySelect = document.getElementById("yearSelect");
         ySelect.innerHTML = "";
-        Object.keys(target.laporan).forEach(th => {
+        Object.keys(target.laporan).sort((a,b) => b-a).forEach(th => {
             ySelect.innerHTML += `<option value="${th}">${th}</option>`;
         });
 
-        // Switch Layout Bank vs Non-Bank
+        // Switch Tampilan (Bank vs Non-Bank)
         if (target.isBank) {
             document.getElementById("bankReports").style.display = "grid";
             document.getElementById("nonBankReports").style.display = "none";
+            
+            document.getElementById("cardDER").style.display = "none";
+            document.getElementById("cardCR").style.display = "none";
+            document.getElementById("cardGPM").style.display = "none";
+            document.getElementById("cardNPM").style.display = "none";
+            document.getElementById("cardNIM").style.display = "block";
+            document.getElementById("cardNPL").style.display = "block";
         } else {
             document.getElementById("bankReports").style.display = "none";
             document.getElementById("nonBankReports").style.display = "grid";
+            
+            document.getElementById("cardDER").style.display = "block";
+            document.getElementById("cardCR").style.display = "block";
+            document.getElementById("cardGPM").style.display = "block";
+            document.getElementById("cardNPM").style.display = "block";
+            document.getElementById("cardNIM").style.display = "none";
+            document.getElementById("cardNPL").style.display = "none";
         }
 
-        // --- RENDER MODUL BERITA EMITEN (BISA DIKLIK) ---
+        const corpDiv = document.getElementById("corpActionContainer");
+        corpDiv.innerHTML = "";
+        if (target.aksiKorporasi && (target.aksiKorporasi.dividen || target.aksiKorporasi.rups)) {
+            let divHTML = "";
+            let rupsHTML = "";
+            if (target.aksiKorporasi.dividen) {
+                const d = target.aksiKorporasi.dividen;
+                divHTML = `
+                    <div class="corp-card dividend">
+                        <div class="corp-header"><i class="fa-solid fa-hand-holding-dollar" style="color:#10b981;"></i> Info Pembagian Dividen</div>
+                        <div class="corp-row"><span class="corp-label">Tipe Dividen</span><span class="corp-value">${d.tipe}</span></div>
+                        <div class="corp-row"><span class="corp-label">Nominal</span><span class="corp-value" style="color:#10b981;">${d.jumlah}</span></div>
+                        <div class="corp-row"><span class="corp-label">Cum Date</span><span class="corp-value">${d.cumDate}</span></div>
+                        <div class="corp-row"><span class="corp-label">Payment Date</span><span class="corp-value">${d.paymentDate}</span></div>
+                    </div>`;
+            }
+            if (target.aksiKorporasi.rups) {
+                const r = target.aksiKorporasi.rups;
+                rupsHTML = `
+                    <div class="corp-card rups">
+                        <div class="corp-header"><i class="fa-solid fa-users-viewfinder" style="color:#f59e0b;"></i> Jadwal Pelaksanaan RUPS</div>
+                        <div class="corp-row"><span class="corp-label">Jenis RUPS</span><span class="corp-value">${r.jenis}</span></div>
+                        <div class="corp-row"><span class="corp-label">Tanggal</span><span class="corp-value">${r.tanggal}</span></div>
+                        <div class="corp-row"><span class="corp-label">Lokasi</span><span class="corp-value">${r.lokasi}</span></div>
+                        <div class="corp-row"><span class="corp-label">Agenda</span><span class="corp-value">${r.agenda}</span></div>
+                    </div>`;
+            }
+            corpDiv.innerHTML = divHTML + rupsHTML;
+        } else {
+            corpDiv.innerHTML = "<p style='color:#64748b; font-style:italic;'>Belum ada jadwal aksi korporasi terdekat.</p>";
+        }
+
         const newsDiv = document.getElementById("newsContainer");
         newsDiv.innerHTML = "";
         if (target.berita && target.berita.length > 0) {
             target.berita.forEach(b => {
-                // Bungkus dengan tag <a> agar menjadi link yang membuka tab baru (target="_blank")
                 newsDiv.innerHTML += `
                     <a href="${b.url}" target="_blank" class="news-link">
                         <div class="news-card">
@@ -322,8 +446,7 @@
                             <div class="news-title">${b.judul}</div>
                             <div class="news-source"><i class="fa-solid fa-bolt"></i> Sumber: ${b.sumber} <i class="fa-solid fa-arrow-up-right-from-square" style="margin-left: 6px; font-size: 0.75rem;"></i></div>
                         </div>
-                    </a>
-                `;
+                    </a>`;
             });
         } else {
             newsDiv.innerHTML = "<p style='color:#64748b; font-style:italic;'>Belum ada berita terbaru untuk emiten ini.</p>";
@@ -351,12 +474,14 @@
         document.getElementById("rROE").innerText = roe.toFixed(1) + "%";
         document.getElementById("rPBV").innerText = pbv.toFixed(2) + "x";
         document.getElementById("rPER").innerText = per.toFixed(1) + "x";
-        document.getElementById("rEPS").innerText = Math.round(eps);
+        document.getElementById("rEPS").innerText = "Rp " + Math.round(eps);
         document.getElementById("rBeta").innerText = target.beta;
+
+        let cur = " T";
 
         if (!target.isBank) {
             let der = (d.totalDebt / d.ekuitas) * 100;
-            let cr = (d.cash / d.stDebt) * 100;
+            let cr = (d.asetLancar / d.stDebt) * 100;
             let gpm = (d.gp / d.rev) * 100;
             let npm = (d.netIncome / d.rev) * 100;
 
@@ -365,50 +490,70 @@
             document.getElementById("rGPM").innerText = gpm.toFixed(1) + "%";
             document.getElementById("rNPM").innerText = npm.toFixed(1) + "%";
 
-            document.getElementById("bsCash").innerText = d.cash + " T";
-            document.getElementById("bsStDebt").innerText = d.stDebt + " T";
-            document.getElementById("bsLtDebt").innerText = d.ltDebt + " T";
-            document.getElementById("bsTotalDebt").innerText = d.totalDebt + " T";
-            document.getElementById("bsLiab").innerText = d.liab + " T";
-            document.getElementById("bsEkuitas").innerText = d.ekuitas + " T";
-            document.getElementById("bsAsset").innerText = d.aset + " T";
+            document.getElementById("bsAsetLancar").innerText = d.asetLancar ? d.asetLancar.toFixed(2) + cur : "-";
+            document.getElementById("bsAsetTidakLancar").innerText = d.asetTidakLancar ? d.asetTidakLancar.toFixed(2) + cur : "-";
 
-            document.getElementById("isRev").innerText = d.rev + " T";
-            document.getElementById("isGp").innerText = d.gp + " T";
-            document.getElementById("isEbitda").innerText = d.ebitda + " T";
-            document.getElementById("isNet").innerText = d.netIncome + " T";
+            document.getElementById("bsCash").innerText = d.cash.toFixed(2) + cur;
+            document.getElementById("bsStDebt").innerText = d.stDebt.toFixed(2) + cur;
+            document.getElementById("bsLtDebt").innerText = d.ltDebt.toFixed(2) + cur;
+            document.getElementById("bsTotalDebt").innerText = d.totalDebt.toFixed(2) + cur;
+            document.getElementById("bsLiab").innerText = d.liab.toFixed(2) + cur;
+            document.getElementById("bsEkuitas").innerText = d.ekuitas.toFixed(2) + cur;
+            document.getElementById("bsAsset").innerText = d.aset.toFixed(2) + cur;
 
-            document.getElementById("cfCfo").innerText = d.cfo + " T";
-            document.getElementById("cfCfi").innerText = d.cfi + " T";
-            document.getElementById("cfCff").innerText = d.cff + " T";
-            document.getElementById("cfCapex").innerText = d.capex + " T";
-            document.getElementById("cfFcf").innerText = d.fcf + " T";
+            document.getElementById("isRev").innerText = d.rev.toFixed(2) + cur;
+            document.getElementById("isGp").innerText = d.gp.toFixed(2) + cur;
+            document.getElementById("isEbitda").innerText = d.ebitda.toFixed(2) + cur;
+            document.getElementById("isNet").innerText = d.netIncome.toFixed(2) + cur;
+
+            document.getElementById("cfCfo").innerText = d.cfo.toFixed(2) + cur;
+            document.getElementById("cfCfi").innerText = d.cfi.toFixed(2) + cur;
+            document.getElementById("cfCff").innerText = d.cff.toFixed(2) + cur;
+            document.getElementById("cfCapex").innerText = d.capex.toFixed(2) + cur;
+            document.getElementById("cfFcf").innerText = d.fcf.toFixed(2) + cur;
             
             document.getElementById("detStatus").className = "status-badge aman";
-            document.getElementById("detStatus").innerHTML = `<i class="fa-solid fa-circle-check"></i> Rasio Utang Modal (DER): ${der.toFixed(1)}% | Ekuitas Tercatat: ${d.ekuitas} T`;
+            document.getElementById("detStatus").innerHTML = `<i class="fa-solid fa-circle-check"></i> Rasio Utang Modal (DER): ${der.toFixed(1)}% | Ekuitas Tercatat: Rp ${d.ekuitas.toFixed(2)} T`;
 
         } else {
-            document.getElementById("rDER").innerText = "-";
-            document.getElementById("rCR").innerText = "-";
-            document.getElementById("rGPM").innerText = "-";
-            document.getElementById("rNPM").innerText = "-";
+            // Render Khusus Bank Ratios
+            document.getElementById("rNIM").innerText = d.nim.toFixed(2) + "%";
+            document.getElementById("rNPL").innerText = d.nplGross.toFixed(2) + "%";
 
-            document.getElementById("bkCash").innerText = d.cash + " T";
-            document.getElementById("bkLiab").innerText = d.liab + " T";
-            document.getElementById("bkEkuitas").innerText = d.ekuitas + " T";
-            document.getElementById("bkAtmr").innerText = d.atmr + " T";
-            document.getElementById("bkNet").innerText = d.netIncome + " T";
-            document.getElementById("bkAsset").innerText = d.aset + " T";
+            document.getElementById("bkAsetLancar").innerText = "N/A (Sektor Bank)";
+            document.getElementById("bkAsetTidakLancar").innerText = "N/A (Sektor Bank)";
 
-            document.getElementById("kolLancar").innerText = d.lancar + " T";
-            document.getElementById("kolDpk").innerText = d.dpk + " T";
-            document.getElementById("kolKurang").innerText = d.kurang + " T";
-            document.getElementById("kolDiragukan").innerText = d.diragukan + " T";
-            document.getElementById("kolMacet").innerText = d.macet + " T";
+            document.getElementById("bkCash").innerText = d.cash.toFixed(2) + cur;
+            document.getElementById("bkLiab").innerText = d.liab.toFixed(2) + cur;
+            document.getElementById("bkDpkNasabah").innerText = d.dpkNasabah ? d.dpkNasabah.toFixed(2) + cur : "-";
+            document.getElementById("bkEkuitas").innerText = d.ekuitas.toFixed(2) + cur;
+            document.getElementById("bkAtmr").innerText = d.atmr.toFixed(2) + cur;
+            document.getElementById("bkAsset").innerText = d.aset.toFixed(2) + cur;
+            
+            // Laba Rugi Bank
+            document.getElementById("bkIntInc").innerText = d.intIncome.toFixed(2) + cur;
+            document.getElementById("bkIntExp").innerText = d.intExpense.toFixed(2) + cur;
+            let netInterestIncome = d.intIncome - d.intExpense;
+            document.getElementById("bkNII").innerText = netInterestIncome.toFixed(2) + cur;
+            document.getElementById("bkNet").innerText = d.netIncome.toFixed(2) + cur;
+
+            // Kolektibilitas Kredit
+            document.getElementById("kolLancar").innerText = d.lancar.toFixed(2) + cur;
+            document.getElementById("kolDpk").innerText = d.dpk.toFixed(2) + cur;
+            document.getElementById("kolKurang").innerText = d.kurang.toFixed(2) + cur;
+            document.getElementById("kolDiragukan").innerText = d.diragukan.toFixed(2) + cur;
+            document.getElementById("kolMacet").innerText = d.macet.toFixed(2) + cur;
+
+            // --- PERHITUNGAN BARU: TOTAL KREDIT BERMASALAH & DIBERIKAN ---
+            let totalKreditBermasalah = d.dpk + d.kurang + d.diragukan + d.macet;
+            let totalKreditDiberikan = d.lancar + d.dpk + d.kurang + d.diragukan + d.macet;
+
+            document.getElementById("bkKreditBermasalah").innerText = totalKreditBermasalah.toFixed(2) + cur;
+            document.getElementById("bkTotalKredit").innerText = totalKreditDiberikan.toFixed(2) + cur;
 
             let statusColor = d.nplGross < 5 ? "aman" : "waspada";
             document.getElementById("detStatus").className = `status-badge ${statusColor}`;
-            document.getElementById("detStatus").innerHTML = `<i class="fa-solid fa-building-columns"></i> Total Kredit Tersalurkan: ${d.totalKredit} T | NPL Gross Bank: ${d.nplGross}%`;
+            document.getElementById("detStatus").innerHTML = `<i class="fa-solid fa-building-columns"></i> Total Kredit Tersalurkan: ${totalKreditDiberikan.toFixed(2)} T | NPL Gross Bank: ${d.nplGross.toFixed(2)}%`;
         }
     }
 
