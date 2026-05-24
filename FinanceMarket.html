@@ -109,7 +109,7 @@
         </a>
         <a href="https://tradingeconomics.com/indonesia/consumer-price-index-cpi" target="_blank" class="econ-card">
             <div class="econ-label">Indeks Harga Konsumen (IHK) <i class="fa-solid fa-up-right-from-square"></i></div>
-            <div class="econ-value">111,09 Points</div>
+            <div class="econ-value">111,09</div>
         </a>
         <a href="https://tradingeconomics.com/indonesia/money-supply-m0" target="_blank" class="econ-card">
             <div class="econ-label">Peredaran Uang (M0) <i class="fa-solid fa-up-right-from-square"></i></div>
@@ -165,9 +165,10 @@
             </div>
         </div>
 
-        <div class="section-title" style="margin-top:0;"><i class="fa-solid fa-calculator"></i> Key Financial Ratios (Kalkulasi Otomatis)</div>
+        <div class="section-title" style="margin-top:0;"><i class="fa-solid fa-calculator"></i> Key Financial Ratios</div>
         <div class="grid-ratios">
             <div class="card-ratio" style="border-top: 3px solid #3b82f6;"><p>ROE</p><h4 id="rROE">0%</h4></div>
+            <div class="card-ratio" style="border-top: 3px solid #8b5cf6;"><p>ROA</p><h4 id="rROA">0%</h4></div>
             <div class="card-ratio" id="cardDER" style="border-top: 3px solid #ef4444;"><p>DER</p><h4 id="rDER">0%</h4></div>
             <div class="card-ratio" style="border-top: 3px solid #10b981;"><p>PBV</p><h4 id="rPBV">0x</h4></div>
             <div class="card-ratio" style="border-top: 3px solid #f59e0b;"><p>PER</p><h4 id="rPER">0x</h4></div>
@@ -175,7 +176,7 @@
             <div class="card-ratio" id="cardCR" style="border-top: 3px solid #ec4899;"><p>Current Ratio</p><h4 id="rCR">0%</h4></div>
             <div class="card-ratio" id="cardGPM" style="border-top: 3px solid #14b8a6;"><p>GPM</p><h4 id="rGPM">0%</h4></div>
             <div class="card-ratio" id="cardNPM" style="border-top: 3px solid #06b6d4;"><p>NPM</p><h4 id="rNPM">0%</h4></div>
-            <div class="card-ratio" id="cardNIM" style="border-top: 3px solid #8b5cf6; display: none;"><p>Net Interest Margin</p><h4 id="rNIM">0%</h4></div>
+            <div class="card-ratio" id="cardNIM" style="border-top: 3px solid #4ade80; display: none;"><p>Net Interest Margin</p><h4 id="rNIM">0%</h4></div>
             <div class="card-ratio" id="cardNPL" style="border-top: 3px solid #eab308; display: none;"><p>NPL Gross</p><h4 id="rNPL">0%</h4></div>
             
             <div class="card-ratio" style="border-top: 3px solid #64748b;"><p>Beta</p><h4 id="rBeta">0</h4></div>
@@ -187,21 +188,23 @@
             <div class="statement-box">
                 <h3><span><i class="fa-solid fa-building"></i> Balance Sheet</span><span>(Triliun Rp)</span></h3>
                 <div class="statement-row"><span>Cash & Equivalents</span><span id="bsCash">0</span></div>
-                <div class="statement-row"><span>Aset Lancar</span><span id="bsAsetLancar">0</span></div>
-                <div class="statement-row"><span>Aset Tidak Lancar</span><span id="bsAsetTidakLancar">0</span></div>
-                <div class="statement-row highlight"><span>Total Asset</span><span id="bsAsset">0</span></div>
+                <div class="statement-row"><span>Current Assets</span><span id="bsAsetLancar">0</span></div>
+                <div class="statement-row"><span>Non-Current Assets</span><span id="bsAsetTidakLancar">0</span></div>
+                <div class="statement-row highlight"><span>Total Assets</span><span id="bsAsset">0</span></div>
                 <div class="statement-row" style="margin-top: 8px;"><span>Short Term Debt</span><span id="bsStDebt">0</span></div>
                 <div class="statement-row"><span>Long Term Debt</span><span id="bsLtDebt">0</span></div>
                 <div class="statement-row"><span>Total Debt</span><span id="bsTotalDebt">0</span></div>
-                <div class="statement-row highlight"><span>Total Liabilitas</span><span id="bsLiab">0</span></div>
-                <div class="statement-row highlight"><span>Total Ekuitas (Modal)</span><span id="bsEkuitas">0</span></div>
+                <div class="statement-row highlight"><span>Total Liability</span><span id="bsLiab">0</span></div>
+                <div class="statement-row highlight"><span>Total Equity (Modal)</span><span id="bsEkuitas">0</span></div>
+                <div class="statement-row"><span>Non-Controlling Interests</span><span id="bsNetNonPengendali">0</span></div>
             </div>
             <div class="statement-box">
                 <h3><span><i class="fa-solid fa-wallet"></i> Income Statement</span><span>(Triliun Rp)</span></h3>
                 <div class="statement-row"><span>Revenue (Pendapatan)</span><span id="isRev">0</span></div>
                 <div class="statement-row"><span>Gross Profit</span><span id="isGp">0</span></div>
                 <div class="statement-row"><span>EBITDA</span><span id="isEbitda">0</span></div>
-                <div class="statement-row"><span>Net Income (Laba Bersih)</span><span id="isNet">0</span></div>
+                <div class="statement-row highlight"><span>Net Income (Laba Bersih)</span><span id="isNet">0</span></div>
+                <div class="statement-row"><span>Net Income Attributable to Owners of the Parent Entity</span><span id="isNetInduk">0</span></div>
             </div>
             <div class="statement-box">
                 <h3><span><i class="fa-solid fa-money-bill-transfer"></i> Cash Flow Statement</span><span>(Triliun Rp)</span></h3>
@@ -217,30 +220,32 @@
             <div class="statement-box">
                 <h3><span><i class="fa-solid fa-shield-halved"></i> Permodalan & Aset Bank</span><span>(Triliun Rp)</span></h3>
                 <div class="statement-row"><span>Cash & Reserve BI</span><span id="bkCash">0</span></div>
-                <div class="statement-row"><span>Aset Lancar</span><span id="bkAsetLancar">N/A</span></div>
-                <div class="statement-row"><span>Aset Tidak Lancar</span><span id="bkAsetTidakLancar">N/A</span></div>
-                <div class="statement-row highlight"><span>Total Aset Bank</span><span id="bkAsset">0</span></div>
-                <div class="statement-row" style="margin-top: 8px;"><span>Total Liabilitas</span><span id="bkLiab">0</span></div>
-                <div class="statement-row" style="color: #64748b; font-size: 0.8rem;"><span>↳ Dana Pihak Ketiga (DPK)</span><span id="bkDpkNasabah">0</span></div>
+                <div class="statement-row"><span>Current Assets</span><span id="bkAsetLancar">N/A</span></div>
+                <div class="statement-row"><span>Non-Current Assets</span><span id="bkAsetTidakLancar">N/A</span></div>
+                <div class="statement-row highlight"><span>Total Bank Assets</span><span id="bkAsset">0</span></div>
+                <div class="statement-row" style="margin-top: 8px;"><span>Total Liability</span><span id="bkLiab">0</span></div>
+                <div class="statement-row" style="color: #64748b; font-size: 0.8rem;"><span>↳ third-party funds (DPK)</span><span id="bkDpkNasabah">0</span></div>
                 <div class="statement-row highlight"><span>Total Ekuitas (Modal)</span><span id="bkEkuitas">0</span></div>
+                <div class="statement-row highlight"><span>Non-Controlling Interests</span><span id="bkNetNonPengendali">0</span></div>
                 <div class="statement-row"><span>ATMR (Aset Berisiko)</span><span id="bkAtmr">0</span></div>
             </div>
             <div class="statement-box">
                 <h3><span><i class="fa-solid fa-wallet"></i> Laba Rugi Bank</span><span>(Triliun Rp)</span></h3>
-                <div class="statement-row"><span>Pendapatan Bunga (Interest Income)</span><span id="bkIntInc">0</span></div>
-                <div class="statement-row"><span>Beban Bunga (Interest Expense)</span><span id="bkIntExp">0</span></div>
-                <div class="statement-row highlight"><span>Pendapatan Bunga Bersih (NII)</span><span id="bkNII">0</span></div>
-                <div class="statement-row highlight" style="margin-top: 25px;"><span>Net Income (Laba Bersih)</span><span id="bkNet">0</span></div>
+                <div class="statement-row"><span>Interest Income</span><span id="bkIntInc">0</span></div>
+                <div class="statement-row"><span>Interest Expense</span><span id="bkIntExp">0</span></div>
+                <div class="statement-row highlight"><span>Net Interest Income (NII)</span><span id="bkNII">0</span></div>
+                <div class="statement-row highlight-blue" style="margin-top: 25px;"><span>Net Income (Laba Bersih)</span><span id="bkNet">0</span></div>
+                <div class="statement-row"><span>Net Income Attributable to Owners of the Parent Entity</span><span id="bkNetInduk">0</span></div>
             </div>
             <div class="statement-box">
                 <h3><span><i class="fa-solid fa-hand-holding-dollar"></i> Kolektibilitas Portofolio Kredit</span><span>(Triliun Rp)</span></h3>
-                <div class="statement-row" style="color: #121212;"><span>1. Kredit Lancar</span><span id="kolLancar">0</span></div>
-                <div class="statement-row" style="color: #121212;"><span>2. Dalam Perhatian Khusus</span><span id="kolDpk">0</span></div>
-                <div class="statement-row" style="color: #121212;"><span>3. Kurang Lancar</span><span id="kolKurang">0</span></div>
-                <div class="statement-row" style="color: #121212;"><span>4. Diragukan</span><span id="kolDiragukan">0</span></div>
-                <div class="statement-row" style="color: #121212;"><span>5. Macet</span><span id="kolMacet">0</span></div>
+                <div class="statement-row"><span>1. Kredit Lancar</span><span id="kolLancar">0</span></div>
+                <div class="statement-row"><span>2. Dalam Perhatian Khusus</span><span id="kolDpk">0</span></div>
+                <div class="statement-row"><span>3. Kurang Lancar</span><span id="kolKurang">0</span></div>
+                <div class="statement-row"><span>4. Diragukan</span><span id="kolDiragukan">0</span></div>
+                <div class="statement-row"><span>5. Macet</span><span id="kolMacet">0</span></div>
                 
-                <div class="statement-row highlight" style="margin-top: 15px;"><span>Total Kredit Bermasalah</span><span id="bkKreditBermasalah">0</span></div>
+                <div class="statement-row highlight" style="margin-top: 15px; color: #b91c1c;"><span>Total Kredit Bermasalah</span><span id="bkKreditBermasalah">0</span></div>
                 <div class="statement-row highlight-blue"><span>Total Kredit Diberikan</span><span id="bkTotalKredit">0</span></div>
             </div>
         </div>
@@ -255,6 +260,7 @@
 </div>
 
 <script>
+    // DATABASE EMITEN
     const emitenDatabase = [
         {
             ticker: "BBCA",
@@ -276,9 +282,10 @@
                 { tanggal: "15 Mei 2026", judul: "BBCA Bagikan Dividen Tunai Interim Sebesar Rp 50 per Saham", sumber: "CNBC Indonesia", url: "https://www.cnbcindonesia.com/market/20241112161543-17-587622/bca--bbca--akan-bagikan-dividen-interim-tunai-rp50-per-saham" }
             ],
             laporan: {
-                "2025": { asetLancar: null, asetTidakLancar: null, aset: 1586.83, liab: 1305.14, dpkNasabah: 1225.50, ekuitas: 281.47, cash: 82.89, netIncome: 57.54, intIncome: 104.2, intExpense: 16.8, nim: 5.8, atmr: 936.37, lancar: 958.61, dpk: 17.82, kurang: 1.41, diragukan: 1.90, macet: 13.17, nplGross: 1.7 },
-                "2024": { asetLancar: null, asetTidakLancar: null, aset: 1449.30, liab: 1186.47, dpkNasabah: 1119.99, ekuitas: 262.64, cash: 81.44, netIncome: 54.84, intIncome: 95.8, intExpense: 14.5, nim: 5.7, atmr: 910.18, lancar: 886.26, dpk: 19.59, kurang: 1.20, diragukan: 1.36, macet: 13.47, nplGross: 1.8 },
-                "2023": { asetLancar: null, asetTidakLancar: null, aset: 1408.11, liab: 1165.57, dpkNasabah: 1090.74, ekuitas: 242.54, cash: 119.93, netIncome: 48.64, intIncome: 87.4, intExpense: 12.3, nim: 5.5, atmr: 825.61, lancar: 754.33, dpk: 36.89, kurang: 20.82, diragukan: 16.08, macet: 14.90, nplGross: 1.9 }
+                // Atribut 'nim' dihapus karena sekarang dihitung otomatis
+                "2025": { asetLancar: null, asetTidakLancar: null, aset: 1586.83, liab: 1305.14, dpkNasabah: 1225.50, ekuitas: 281.47, cash: 82.89, netIncome: 57.54, intIncome: 104.2, netInduk: 106.5, intExpense: 16.8, atmr: 936.37, netNonPengendali: 172.2, lancar: 958.61, dpk: 17.82, kurang: 1.41, diragukan: 1.90, macet: 13.17 },
+                "2024": { asetLancar: null, asetTidakLancar: null, aset: 1449.30, liab: 1186.47, dpkNasabah: 1119.99, ekuitas: 262.64, cash: 81.44, netIncome: 54.84, intIncome: 95.8, netInduk: 104.5, intExpense: 14.5, atmr: 910.18, netNonPengendali: 156.2, lancar: 886.26, dpk: 19.59, kurang: 1.20, diragukan: 1.36, macet: 13.47 },
+                "2023": { asetLancar: null, asetTidakLancar: null, aset: 1408.11, liab: 1165.57, dpkNasabah: 1090.74, ekuitas: 242.54, cash: 119.93, netIncome: 48.64, intIncome: 87.4, netInduk: 104.5, intExpense: 12.3, atmr: 825.61, netNonPengendali: 156.2, lancar: 754.33, dpk: 36.89, kurang: 20.82, diragukan: 16.08, macet: 14.90 }
             }
         },
         {
@@ -296,14 +303,14 @@
             },
             berita: [
                 { tanggal: "22 Mei 2026", judul: "Penyebab IHSG Ditutup Naik 1,1% Hari Ini", Sumber: "CNBC Indonesia", url: "https://www.cnbcindonesia.com/market/20260522160828-17-737142/penyebab-ihsg-ditutup-naik-11-hari-ini" },
-                { tanggal: "20 Mei 2026", judul: "Bos Telkom Pamer Sumber Duit Baru, Baru Sebulan Sudah Ngebut  Baca artikel CNBC Indonesia", sumber: "CNBC Indonesia", url: "https://www.cnbcindonesia.com/tech/20260520150231-37-736422/bos-telkom-pamer-sumber-duit-baru-baru-sebulan-sudah-ngebut" },
+                { tanggal: "20 Mei 2026", judul: "Bos Telkom Pamer Sumber Duit Baru, Baru Sebulan Sudah Ngebut", sumber: "CNBC Indonesia", url: "https://www.cnbcindonesia.com/tech/20260520150231-37-736422/bos-telkom-pamer-sumber-duit-baru-baru-sebulan-sudah-ngebut" },
                 { tanggal: "20 Mei 2026", judul: "Telkomsel Operasikan Jaringan 5G di 107 Kota Indonesia Per Mei 2026", sumber: "babelinsight.id", url: "https://www.babelinsight.id/telkomsel-operasikan-jaringan-5g-indonesia" }
 
             ],
             laporan: {
-                "2025": { asetLancar: 61.77, asetTidakLancar: 225.99, aset: 287.76, liab: 137.22, ekuitas: 130.69, cash: 25.31, stDebt: 73.95, ltDebt: 63.27, totalDebt: 137.22, rev: 146.74, gp: 34.65, ebitda: 72.24, netIncome: 17.81, cfo: 36.80, cfi: -14.28, cff: -22.93, capex: 24.58, fcf: 12.22 },
-                "2024": { asetLancar: 63.08, asetTidakLancar: 228.31, aset: 291.39, liab: 137.19, ekuitas: 133.81, cash: 29.31, stDebt: 76.77, ltDebt: 60.42, totalDebt: 137.19, rev: 149.97, gp: 41.45, ebitda: 75.03, netIncome: 22.40, cfo: 38.93, cfi: -14.93, cff: -25.63, capex: 24.45, fcf: 14.48 },
-                "2023": { asetLancar: 55.61, asetTidakLancar: 231.43, aset: 287.04, liab: 130.48, ekuitas: 135.74, cash: 29.01, stDebt: 71.57, ltDebt: 58.91, totalDebt: 130.48, rev: 149.22, gp: 44.38, ebitda: 77.58, netIncome: 24.56, cfo: 36.00, cfi: -14.00, cff: -22.00, capex: 32.97, fcf: 12.00 }
+                "2025": { asetLancar: 61.77, asetTidakLancar: 225.99, aset: 287.76, liab: 137.22, ekuitas: 130.69, netNonPengendali: 156.2, cash: 25.31, stDebt: 73.95, ltDebt: 63.27, totalDebt: 137.22, rev: 146.74, gp: 34.65, ebitda: 72.24, netIncome: 17.81, netInduk: 104.5, cfo: 36.80, cfi: -14.28, cff: -22.93, capex: 24.58, fcf: 12.22 },
+                "2024": { asetLancar: 63.08, asetTidakLancar: 228.31, aset: 291.39, liab: 137.19, ekuitas: 133.81, netNonPengendali: 156.2, cash: 29.31, stDebt: 76.77, ltDebt: 60.42, totalDebt: 137.19, rev: 149.97, gp: 41.45, ebitda: 75.03, netIncome: 22.40, netInduk: 104.5, cfo: 38.93, cfi: -14.93, cff: -25.63, capex: 24.45, fcf: 14.48 },
+                "2023": { asetLancar: 55.61, asetTidakLancar: 231.43, aset: 287.04, liab: 130.48, ekuitas: 135.74, netNonPengendali: 156.2, cash: 29.01, stDebt: 71.57, ltDebt: 58.91, totalDebt: 130.48, rev: 149.22, gp: 44.38, ebitda: 77.58, netIncome: 24.56, netInduk: 104.5, cfo: 36.00, cfi: -14.00, cff: -22.00, capex: 32.97, fcf: 12.00 }
             }
         },
         {
@@ -320,14 +327,14 @@
                 dividen: { jumlah: "Rp 390 / Saham", tipe: "Dividen Final", cumDate: "04 Mei 2026", paymentDate: "25 Mei 2026" }
             },
             berita: [
-                { tanggal: "13 Mei 2026", judul: "Simak Rekomendasi Saham Astra (ASII) Usai Penjualan Meningkat di April 2026", sumber: "Kontan.co.id", url: "https://investasi.kontan.co.id/news/simak-rekomendasi-saham-astra-asii-usai-penjualan-meningkat-di-april-2026#goog_rewarded" },
+                { tanggal: "13 Mei 2026", judul: "Simak Rekomendasi Saham Astra (ASII) Usai Penjualan Meningkat di April 2026", sumber: "Kontan.co.id", url: "https://investasi.kontan.co.id/news/simak-rekomendasi-saham-astra-asii-usai-penjualan-meningkat-di-april-2026" },
                 { tanggal: "06 Mei 2026", judul: "Laba ASII Turun 16% di Q1 2026, Rekomendasi HOLD, Ini Target Harganya", sumber: "bareksa.com", url: "https://www.bareksa.com/berita/saham/2026-05-06/laba-asii-turun-16-di-q1-2026-rekomendasi-hold-ini-target-harganya" },
                 { tanggal: "29 Apr 2026", judul: "Kinerja Kuartal I-2026 Lesu, Intip Rekomendasi Saham Astra (ASII)", sumber: "Kontan.co.id", url: "https://id.tradingview.com/news/kontan:0a24fcb9e87ea:0/" }
             ],
             laporan: {
-                "2025": { asetLancar: 188.56, asetTidakLancar: 318.81, aset: 507.37, liab: 216.55, ekuitas: 228.91, cash: 52.62, stDebt: 21.00, ltDebt: 89.30, totalDebt: 110.30, rev: 323.39, gp: 71.44, ebitda: 45.00, netIncome: 32.77, cfo: 35.00, cfi: -15.00, cff: -20.00, capex: 15.00, fcf: 20.00 },
-                "2024": { asetLancar: 176.26, asetTidakLancar: 295.19, aset: 471.45, liab: 199.45, ekuitas: 213.68, cash: 48.44, stDebt: 11.82, ltDebt: 88.85, totalDebt: 100.67, rev: 328.48, gp: 73.06, ebitda: 48.50, netIncome: 33.90, cfo: 30.00, cfi: -10.00, cff: -12.00, capex: 12.00, fcf: 18.00 },
-                "2023": { asetLancar: 166.19, asetTidakLancar: 279.49, aset: 445.68, liab: 195.26, ekuitas: 250.42, cash: 41.14, stDebt: 39.06, ltDebt: 54.25, totalDebt: 93.31, rev: 316.57, gp: 73.31, ebitda: 45.00, netIncome: 33.84, cfo: 30.00, cfi: -15.00, cff: -10.00, capex: 37.00, fcf: 20.00 }
+                "2025": { asetLancar: 188.56, asetTidakLancar: 318.81, aset: 507.37, liab: 216.55, ekuitas: 290.81, netNonPengendali: 61.90, cash: 52.62, stDebt: 21.00, ltDebt: 89.30, totalDebt: 110.30, rev: 323.39, gp: 71.44, ebitda: 45.00, netIncome: 32.77, netInduk: 32.76, cfo: 35.00, cfi: -15.00, cff: -20.00, capex: 15.00, fcf: 20.00 },
+                "2024": { asetLancar: 176.26, asetTidakLancar: 295.19, aset: 471.45, liab: 199.45, ekuitas: 213.68, netNonPengendali: 156.2, cash: 48.44, stDebt: 11.82, ltDebt: 88.85, totalDebt: 100.67, rev: 328.48, gp: 73.06, ebitda: 48.50, netIncome: 33.90, netInduk: 104.5, cfo: 30.00, cfi: -10.00, cff: -12.00, capex: 12.00, fcf: 18.00 },
+                "2023": { asetLancar: 166.19, asetTidakLancar: 279.49, aset: 445.68, liab: 195.26, ekuitas: 250.42, netNonPengendali: 156.2, cash: 41.14, stDebt: 39.06, ltDebt: 54.25, totalDebt: 93.31, rev: 316.57, gp: 73.31, ebitda: 45.00, netIncome: 33.84, netInduk: 104.5, cfo: 30.00, cfi: -15.00, cff: -10.00, capex: 37.00, fcf: 20.00 }
             }
         }
     ];
@@ -464,14 +471,18 @@
 
         const d = target.laporan[tahun];
         
-        let eps = (d.netIncome * 1_000_000_000_000) / target.beredar;
+        let eps = (d.netInduk * 1_000_000_000_000) / target.beredar;
         let per = target.harga / eps;
         
         let bvps = (d.ekuitas * 1_000_000_000_000) / target.beredar;
         let pbv = target.harga / bvps;
-        let roe = (d.netIncome / d.ekuitas) * 100;
+        
+        // KALKULASI ROE & ROA
+        let roe = (d.netInduk / (d.ekuitas-d.netNonPengendali) * 100);
+        let roa = (d.netInduk / d.aset) * 100;
 
         document.getElementById("rROE").innerText = roe.toFixed(1) + "%";
+        document.getElementById("rROA").innerText = roa.toFixed(1) + "%";
         document.getElementById("rPBV").innerText = pbv.toFixed(2) + "x";
         document.getElementById("rPER").innerText = per.toFixed(1) + "x";
         document.getElementById("rEPS").innerText = "Rp " + Math.round(eps);
@@ -480,7 +491,7 @@
         let cur = " T";
 
         if (!target.isBank) {
-            let der = (d.totalDebt / d.ekuitas) * 100;
+            let der = ((d.stDebt+d.ltDebt) / d.ekuitas) * 100;
             let cr = (d.asetLancar / d.stDebt) * 100;
             let gpm = (d.gp / d.rev) * 100;
             let npm = (d.netIncome / d.rev) * 100;
@@ -498,6 +509,7 @@
             document.getElementById("bsLtDebt").innerText = d.ltDebt.toFixed(2) + cur;
             document.getElementById("bsTotalDebt").innerText = d.totalDebt.toFixed(2) + cur;
             document.getElementById("bsLiab").innerText = d.liab.toFixed(2) + cur;
+            document.getElementById("bsNetNonPengendali").innerText = d.netNonPengendali.toFixed(2) + " T";
             document.getElementById("bsEkuitas").innerText = d.ekuitas.toFixed(2) + cur;
             document.getElementById("bsAsset").innerText = d.aset.toFixed(2) + cur;
 
@@ -505,6 +517,7 @@
             document.getElementById("isGp").innerText = d.gp.toFixed(2) + cur;
             document.getElementById("isEbitda").innerText = d.ebitda.toFixed(2) + cur;
             document.getElementById("isNet").innerText = d.netIncome.toFixed(2) + cur;
+            document.getElementById("isNetInduk").innerText = d.netInduk.toFixed(2) + " T";
 
             document.getElementById("cfCfo").innerText = d.cfo.toFixed(2) + cur;
             document.getElementById("cfCfi").innerText = d.cfi.toFixed(2) + cur;
@@ -516,9 +529,18 @@
             document.getElementById("detStatus").innerHTML = `<i class="fa-solid fa-circle-check"></i> Rasio Utang Modal (DER): ${der.toFixed(1)}% | Ekuitas Tercatat: Rp ${d.ekuitas.toFixed(2)} T`;
 
         } else {
+            // --- PERHITUNGAN BARU: TOTAL KREDIT BERMASALAH & DIBERIKAN ---
+            let totalKreditBermasalah = d.dpk + d.kurang + d.diragukan + d.macet;
+            let totalKreditDiberikan = d.lancar + d.dpk + d.kurang + d.diragukan + d.macet;
+            
+            // --- RUMUS OTOMATIS NII, NIM, & NPL GROSS ---
+            let netInterestIncome = d.intIncome - d.intExpense;
+            let calculatedNIM = (netInterestIncome / totalKreditDiberikan) * 100;
+            let calculatedNPL = (totalKreditBermasalah / totalKreditDiberikan) * 100;
+
             // Render Khusus Bank Ratios
-            document.getElementById("rNIM").innerText = d.nim.toFixed(2) + "%";
-            document.getElementById("rNPL").innerText = d.nplGross.toFixed(2) + "%";
+            document.getElementById("rNIM").innerText = calculatedNIM.toFixed(2) + "%";
+            document.getElementById("rNPL").innerText = calculatedNPL.toFixed(2) + "%";
 
             document.getElementById("bkAsetLancar").innerText = "N/A (Sektor Bank)";
             document.getElementById("bkAsetTidakLancar").innerText = "N/A (Sektor Bank)";
@@ -526,6 +548,7 @@
             document.getElementById("bkCash").innerText = d.cash.toFixed(2) + cur;
             document.getElementById("bkLiab").innerText = d.liab.toFixed(2) + cur;
             document.getElementById("bkDpkNasabah").innerText = d.dpkNasabah ? d.dpkNasabah.toFixed(2) + cur : "-";
+            document.getElementById("bkNetNonPengendali").innerText = d.netNonPengendali.toFixed(2) + " T";
             document.getElementById("bkEkuitas").innerText = d.ekuitas.toFixed(2) + cur;
             document.getElementById("bkAtmr").innerText = d.atmr.toFixed(2) + cur;
             document.getElementById("bkAsset").innerText = d.aset.toFixed(2) + cur;
@@ -533,9 +556,9 @@
             // Laba Rugi Bank
             document.getElementById("bkIntInc").innerText = d.intIncome.toFixed(2) + cur;
             document.getElementById("bkIntExp").innerText = d.intExpense.toFixed(2) + cur;
-            let netInterestIncome = d.intIncome - d.intExpense;
             document.getElementById("bkNII").innerText = netInterestIncome.toFixed(2) + cur;
             document.getElementById("bkNet").innerText = d.netIncome.toFixed(2) + cur;
+            document.getElementById("bkNetInduk").innerText = d.netInduk.toFixed(2) + " T";
 
             // Kolektibilitas Kredit
             document.getElementById("kolLancar").innerText = d.lancar.toFixed(2) + cur;
@@ -544,16 +567,12 @@
             document.getElementById("kolDiragukan").innerText = d.diragukan.toFixed(2) + cur;
             document.getElementById("kolMacet").innerText = d.macet.toFixed(2) + cur;
 
-            // --- PERHITUNGAN BARU: TOTAL KREDIT BERMASALAH & DIBERIKAN ---
-            let totalKreditBermasalah = d.dpk + d.kurang + d.diragukan + d.macet;
-            let totalKreditDiberikan = d.lancar + d.dpk + d.kurang + d.diragukan + d.macet;
-
             document.getElementById("bkKreditBermasalah").innerText = totalKreditBermasalah.toFixed(2) + cur;
             document.getElementById("bkTotalKredit").innerText = totalKreditDiberikan.toFixed(2) + cur;
 
-            let statusColor = d.nplGross < 5 ? "aman" : "waspada";
+            let statusColor = calculatedNPL < 5 ? "aman" : "waspada";
             document.getElementById("detStatus").className = `status-badge ${statusColor}`;
-            document.getElementById("detStatus").innerHTML = `<i class="fa-solid fa-building-columns"></i> Total Kredit Tersalurkan: ${totalKreditDiberikan.toFixed(2)} T | NPL Gross Bank: ${d.nplGross.toFixed(2)}%`;
+            document.getElementById("detStatus").innerHTML = `<i class="fa-solid fa-building-columns"></i> Total Kredit Tersalurkan: ${totalKreditDiberikan.toFixed(2)} T | Rasio NPL (Kolek 2-5): ${calculatedNPL.toFixed(2)}%`;
         }
     }
 
