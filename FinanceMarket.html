@@ -282,7 +282,6 @@
                 { tanggal: "15 Mei 2026", judul: "BBCA Bagikan Dividen Tunai Interim Sebesar Rp 50 per Saham", sumber: "CNBC Indonesia", url: "https://www.cnbcindonesia.com/market/20241112161543-17-587622/bca--bbca--akan-bagikan-dividen-interim-tunai-rp50-per-saham" }
             ],
             laporan: {
-                // Atribut 'nim' dihapus karena sekarang dihitung otomatis
                 "2025": { asetLancar: null, asetTidakLancar: null, aset: 1586.83, liab: 1305.14, dpkNasabah: 1225.50, ekuitas: 281.47, cash: 82.89, netIncome: 57.54, intIncome: 104.2, netInduk: 106.5, intExpense: 16.8, atmr: 936.37, netNonPengendali: 172.2, lancar: 958.61, dpk: 17.82, kurang: 1.41, diragukan: 1.90, macet: 13.17 },
                 "2024": { asetLancar: null, asetTidakLancar: null, aset: 1449.30, liab: 1186.47, dpkNasabah: 1119.99, ekuitas: 262.64, cash: 81.44, netIncome: 54.84, intIncome: 95.8, netInduk: 104.5, intExpense: 14.5, atmr: 910.18, netNonPengendali: 156.2, lancar: 886.26, dpk: 19.59, kurang: 1.20, diragukan: 1.36, macet: 13.47 },
                 "2023": { asetLancar: null, asetTidakLancar: null, aset: 1408.11, liab: 1165.57, dpkNasabah: 1090.74, ekuitas: 242.54, cash: 119.93, netIncome: 48.64, intIncome: 87.4, netInduk: 104.5, intExpense: 12.3, atmr: 825.61, netNonPengendali: 156.2, lancar: 754.33, dpk: 36.89, kurang: 20.82, diragukan: 16.08, macet: 14.90 }
@@ -572,7 +571,7 @@
 
             let statusColor = calculatedNPL < 5 ? "aman" : "waspada";
             document.getElementById("detStatus").className = `status-badge ${statusColor}`;
-            document.getElementById("detStatus").innerHTML = `<i class="fa-solid fa-building-columns"></i> Total Kredit Tersalurkan: ${totalKreditDiberikan.toFixed(2)} T | Rasio NPL (Kolek 2-5): ${calculatedNPL.toFixed(2)}%`;
+            document.getElementById("detStatus").innerHTML = `<i class="fa-solid fa-building-columns"></i> Total Kredit Tersalurkan: ${totalKreditDiberikan.toFixed(2)} T | Rasio NPL: ${calculatedNPL.toFixed(2)}%`;
         }
     }
 
